@@ -1,0 +1,276 @@
+
+@extends('layouts/contentLayoutMaster')
+
+@section('title', 'Payment.Ultimopay')
+
+@section('vendor-style')
+        {{-- vendor files --}}
+        <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/datatables.min.css')) }}">
+        <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/extensions/dataTables.checkboxes.css')) }}">
+@endsection
+@section('page-style')
+        {{-- Page css files --}}
+        {{-- <link rel="stylesheet" href="{{ asset(mix('css/pages/data-list-view.css')) }}"> --}}
+@endsection
+
+@section('content')
+ <style>
+   #DataTables_Table_0_length select{
+      width: 50;
+      height: 30;
+      font-size: 11px;
+   }
+   .main {
+    color: black;
+   }
+   .crypto_content {
+    background-color: rgb(250, 200, 10);
+    padding: 10px;
+
+   }
+   .title {
+    font-size: 30px;
+    color: black;
+    align-items: center;
+    font-weight: bold;
+    padding: 30px;
+   }
+   .menu {
+    align-items: center;
+   }
+   .content {
+    margin-left: 0 !important;
+   }
+   .menu_btn {
+    width: 100px;
+    padding: 10px;
+    background-color: white;
+    font-weight: 700;
+   }
+   .menu_btn:hover {
+    background-color: black;
+    color: white;
+   }
+   .menu .active {
+    background-color: black;
+    color: white;
+   }
+   .withdraw_content {
+    padding: 40px;
+   }
+   .content_title {
+    font-size: 1.3rem;
+    font-weight: bold;
+   }
+   .content_btn {
+    background-color: rgb(250, 200, 10);
+    font-weight: bold;
+    border: none;
+    color: black;
+   }
+   .amount_input {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background: rgb(250, 200, 10);
+    padding: 20px;
+    font-size: 1.5rem;
+    color: black;
+    font-weight: bold;
+   }
+   .address_input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgb(250, 200, 10);
+    padding: 20px;
+    font-size: 1.5rem;
+    color: black;
+   }
+   .address_input:focus-visible, .amount_input:focus-visible {
+      outline: none;
+   }
+   .left_side {
+     width: 60%;
+     padding: 5px;
+     border-right: 1px solid rgb(119, 117, 117);
+     
+   }
+   .right_side {
+     width: 40%;
+     padding: 5px;
+     padding-left: 20px;
+   }
+   .notice_item {
+    border-bottom: 1px solid rgb(119, 117, 117);
+   }
+   .form-control:focus {
+    border: 1px solid rgb(250, 200, 10);
+   }
+ </style>
+<div class="main">
+    <div>
+        <div class="row crypto_content">
+          <div class="col-sm-7 text-center title align-center justify-content-center">
+              <p>Tether USD</p>
+              <p id="balance" class="mt-2"> {{$balance ? $balance : 0.00}} <span> USDT</span></p>
+            </div>
+          <div class="col-sm-5 d-flex menu">
+              <div class="">
+                      <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
+                      <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
+              </div>
+          </div>
+        </div>
+        <div class="withdraw_content">
+            <div class="content_title">IMPORTANT NOTICE</div>
+            <div>
+                <div class="d-flex w-75 notice_item">
+                  <div class="left_side">Minimum withdrawal amount(including fees)</div>
+                  <div class="right_side">USDT</div>
+                </div>
+                <div class="d-flex w-75 notice_item">
+                    <div class="left_side">Withdraw fee</div>
+                    <div class="right_side">USDT + 0.1% of withdraw amount</div>
+                </div>
+                <div class="d-flex w-75 notice_item">
+                    <div class="left_side">Available amount for withdrawal(including fees)</div>
+                    <div class="right_side">USDT</div>
+                </div>
+            </div>
+            <h2 class="mt-2">AMOUNT</h2>
+            <input type="text" class="amount_input" placeholder="0.00" />
+            <h2 class="mt-2">TETHER USD ADDRESS</h2>
+            <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
+            <div class="form-group mt-2 ">
+              <label>Network</label>
+              <select class="form-control network_select">
+                <option>--Select Network--</option>
+                <option>Ethereum(ERC20)</option>
+                <option>Tron(TRC20)</option>
+                <option>BNB Smart Chain(BEP20)</option>
+              </select>
+            </div>
+            <div class="mt-2">
+              <button class="btn content_btn">WITHDRAW</button>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+  {{-- Data list view end --}}
+@endsection
+
+<div class="modal text-left" id="confirmDialog" tabindex="-1" role="dialog"
+aria-labelledby="myModalLabel130" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+  <div class="modal-content">
+    <div class="modal-header bg-info white">
+      <h5 class="modal-title" id="myModalLabel130">Confirmation Modal</h5>
+      <button type="button" class="close"  id="closeConfirm" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body p-3">
+      <div class="d-flex justify-content-around">
+        <div>
+          <p>File Name: </p>
+          <p>Merchant:</p>
+          <p>Total Amount of uploaded file: </p>
+        </div>
+        <div>
+            <p id="filename" class=""> </p>
+            <p id="selectedMerchant"  class=""></p>
+            <div class="d-flex">
+              <p id="totalAmount" ></p><span>&nbsp; USDT</span>
+            </div>
+           
+            
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" id="uploadConfirm" >Confirm</button>
+      <button type="button" class="btn btn-gray" id="uploadCancel" >Cancel</button>
+    </div>
+  </div>
+</div>
+</div>
+ {{-- Modal --}}
+ <div class="modal text-left" id="errorDialog" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel120" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger white">
+        <h5 class="modal-title" id="myModalLabel120">Error</h5>
+        <button type="button" class="close"  aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="errorBody">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gray" id="closeErrorModal" >Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+ {{-- Modal --}}
+ <div class="modal text-left" id="detailDialog" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel120" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content" style="max-height: inherit">
+      <div class="modal-header bg-info white d-flex justify-content-around">
+        <h5 class="modal-title" id="detailModalName"></h5>
+        <div class="d-flex">
+          <span>Success:  &nbsp;</span>
+          <h6 class="modal-title" id="detailModalSuccessCount"></h6>
+        </div>
+        <div class="d-flex">
+          <span>Fail:  &nbsp;</span>
+          <h6 class="modal-title" id="detailModalFailCount"></h6>
+        </div>
+      </div>
+      <div class="modal-body" id="detailBody">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Num</th>
+                <th>User ID</th>
+                <th>Amount</th>
+                <th>Result</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="file_detail">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-gray" id="closeDetailModal" >Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+@section('vendor-script')
+{{-- vendor js files --}}
+        <script src="{{ asset(mix('vendors/js/extensions/dropzone.min.js')) }}"></script>
+        <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.min.js')) }}"></script>
+        <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.buttons.min.js')) }}"></script>
+        <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.bootstrap4.min.js')) }}"></script>
+        <script src="{{ asset(mix('vendors/js/tables/datatable/buttons.bootstrap.min.js')) }}"></script>
+        <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.select.min.js')) }}"></script>
+        <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.checkboxes.min.js')) }}"></script>
+@endsection
+@section('page-script')
+        <script> 
+            let base_url = '<?php echo url(""); ?>'
+        </script>
+        {{-- Page js files --}}
+        <script src="{{ asset(mix('js/scripts/ui/data-list-view.js')) }}"></script>
+@endsection
