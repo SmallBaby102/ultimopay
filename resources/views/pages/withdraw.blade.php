@@ -137,7 +137,7 @@
                 </div>
             </div>
             <div class="form-group mt-2 ">
-              <div class="content_title">Network</div>
+              <div class="content_title">NETWORK</div>
               <select class="form-control network_select">
                 <option>--Select Network--</option>
                 <option>Ethereum(ERC20)</option>

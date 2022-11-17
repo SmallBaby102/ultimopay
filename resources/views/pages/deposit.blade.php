@@ -26,17 +26,21 @@
    .crypto_content {
     padding: 10px;
     background-color: rgb(250, 200, 10);
-
+    justify-content: space-between;
    }
    .title {
     font-size: 30px;
     color: black;
     align-items: center;
     font-weight: bold;
-    padding: 30px;
+    padding: 0px;
+    padding-left: 10px;
+    padding-top: 30px;
    }
    .menu {
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
    }
    .content {
     margin-left: 0 !important;
@@ -44,6 +48,7 @@
    .menu_btn {
     width: 100px;
     padding: 10px;
+    margin-top: 10px;
     background-color: white;
     font-weight: 700;
    }
@@ -108,29 +113,47 @@
    }
    #btn-copy {
     background: rgb(250, 200, 10);
-    color: white;
+    color: black;
+    margin-left: 10px;
    }
    .deposit_address {
    }
    .coin_icon {
-    width: 130px;
-    height: 130px;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+   }
+   .important_notice {
+    color: red;
+   }
+   .fonticon-wrap {
+    margin: 5px;
+    position: absolute;
+    font-size: 25px;
+    left: 5px;
+    color: black;
    }
  </style>
+
 <div class="main">
-        <div class="row crypto_content">
-          <div class="col-sm-7 text-center title align-center justify-content-center">
-              <p>Tether USD</p>
-              <p id="balance" class="mt-2"> {{$balance ? $balance : 0.00}} <span> USDT</span></p>
+        <a href="{{url('/')}}" class="fonticon-wrap">
+          <i class="feather icon-arrow-left"></i>
+        </a>
+        <div class="row crypto_content p-2">
+          <div class="text-center title align-center justify-content-center">
+              <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
+              <p id="balance" class="text-left"> 1235678
+               </p>
+              <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
             </div>
-          <div class="col-sm-5 d-flex menu">
+          <div class="d-flex menu">
                       <a href="{{url('deposit-page')}}" class="btn menu_btn active" >Deposit</a>
                       <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
           </div>
         </div>
-        <div class="deposit_content p-2">
+        <div class="deposit_content pl-2 pr-2">
           <div class="form-group mt-2 ">
-            <div class="content_title">Network</div>
+            <div class="content_title">NETWORK</div>
             <select class="form-control network_select">
               <option value="none">--Select Network--</option>
               <option value="Ethereum">Ethereum(ERC20)</option>
@@ -139,26 +162,30 @@
             </select>
           </div>
         </div>
-        <div class="deposit_address p-2" style="display: none" >
+        <div class="important_notice pl-2 pr-2">
+            Please note that you do not mistake the network, if you deposit via another network  your assets may be lost.
+        </div>
+        <div class="deposit_address p-2" style="display:none" >
               <div class="row" style="align-items: center">
-                <img alt="Address" id="deposit_address_qrcode" class="col-sm-3"
-                  src=""
-                />
-                <div class="col-sm-6 text-center">
-                  <div class="pr-0 text-center">
+                
+                <div class="col-sm-6 text-left">
+                  <div class="pr-0 text-left">
                     <div class="form-group">
-                      <input type="text" class="form-control" id="copy-to-clipboard-input" value="">
+                      <div class="content_title">DEPOSIT ADDRESS</div>
+                      <div class="d-flex">
+                        <input type="text" class="form-control" readonly id="copy-to-clipboard-input" value="">
+                        <div class="text-center">
+                          <button class="btn" id="btn-copy">Copy</button>
+                        </div>
+      
+                      </div>
                     </div>
                   </div>
-                  <div class="text-center">
-                    <button class="btn" id="btn-copy">Copy</button>
-                  </div>
                 </div>
-                <div class="col-sm-3">
-                  <img alt="Icon" class="coin_icon"
-                    src="images/logo/usdt.png"
-                  />
-                </div>
+                <img alt="Address" id="deposit_address_qrcode" class=""
+                  src=""
+                />
+               
               </div>
           </div>
     </div>

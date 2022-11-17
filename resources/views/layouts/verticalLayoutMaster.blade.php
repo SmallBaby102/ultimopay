@@ -13,9 +13,9 @@ $configData = Helper::applClasses();
     <!-- BEGIN: Header-->
     <div class="content-overlay"></div>
     {{-- <div class="header-navbar-shadow"></div> --}}
-    <div class="logo" style="position: absolute">
+    <a href="{{url('/')}}"  class="logo" style="position: absolute; left:20px">
       <img src="images/logo/ultimov2-logo.png" style="width: 130px" alt="">
-    </div>
+    </a>
     {{-- Include Navbar --}}
     {{-- @include('panels.navbar') --}}
 
@@ -54,7 +54,7 @@ $configData = Helper::applClasses();
   <!-- End: Content-->
 
   <div class="sidenav-overlay"></div>
-  <div class="drag-target"></div>
+  {{-- <div class="drag-target"></div> --}}
 
   {{-- include footer --}}
   @include('panels/footer')

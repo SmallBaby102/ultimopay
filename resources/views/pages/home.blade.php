@@ -16,15 +16,7 @@
 @section('content')
  <style>
   
-   #DataTables_Table_0_length select{
-      width: 50;
-      height: 30;
-      font-size: 11px;
-   }
-   .main {
-    color: black;
-   }
-   .crypto_content {
+   .header {
     background-color: rgb(250, 200, 10);
     padding: 10px;
 
@@ -38,6 +30,8 @@
    }
    .menu {
     align-items: center;
+    justify-content: end;
+    margin-top: 10px;
    }
    .content {
     margin-left: 0 !important;
@@ -45,8 +39,10 @@
    .menu_btn {
     width: 100px;
     padding: 10px;
-    background-color: white;
+    background-color: rgb(250, 200, 10);
     font-weight: 700;
+    margin-left: 10px;
+    border-radius: 25px;
    }
    .menu_btn:hover {
     background-color: black;
@@ -83,22 +79,31 @@
     font-size: 1.4rem;
     align-items: center;
    }
+   .coin_name div {
+        font-size: 1rem;
+   }
  </style>
-<div class="main crypto_content p-1 pt-5">
-      <div class="row mt-5">
-          <div class="col-sm-8 d-flex justify-content-between">
-              <div class="d-flex col-sm-6">
-                <img src="/images/logo/usdt.png" class="coin_img" alt="">
-                <div  class=" d-flex coin_name ">Tether USD</div>
-              </div>
-              <div id="balance" class="d-flex coin_balance col-sm-6"> 124142354 <span> &nbsp; USDT</span></div>
-            </div>
-          <div class="col-sm-4 d-flex menu">
-                <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
-                <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
-          </div>
-    </div>
+<div class="main header p-1 pt-5">
 </div>
+    <div class="row m-2 mt-5 p-1 pl-3 pr-3 justify-content-between" style="background-color: white; color: black">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex">
+                <img src="/images/logo/usdt.png" class="coin_img" alt="">
+                <div  class="coin_name ">Tether USD 
+                        <div style="margin-left: 2px">USDT</div>
+                </div>
+                
+              </div>
+            </div>
+            <div class="text-right"> 
+              <div id="balance" class="coin_balance text-right"> 124142354 </div>
+              <div class="d-flex menu ">
+                        <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
+                        <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
+                </div>
+            </div>
+          
+    </div>
 
 @endsection
 

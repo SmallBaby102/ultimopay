@@ -1,3 +1,6 @@
 body {
   font-family: "CA Slalom", Sans-serif;
 }
+.logo:hover {
+  color: #5e50ee;
+}
