@@ -15,11 +15,7 @@
 
 @section('content')
  <style>
-   #DataTables_Table_0_length select{
-      width: 50;
-      height: 30;
-      font-size: 11px;
-   }
+
    .main {
     color: black;
    }

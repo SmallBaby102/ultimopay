@@ -25,19 +25,23 @@
     color: black;
    }
    .crypto_content {
-    background-color: rgb(250, 200, 10);
     padding: 10px;
-
+    background-color: rgb(250, 200, 10);
+    justify-content: space-between;
    }
    .title {
     font-size: 30px;
     color: black;
     align-items: center;
     font-weight: bold;
-    padding: 30px;
+    padding: 0px;
+    padding-left: 10px;
+    padding-top: 30px;
    }
    .menu {
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
    }
    .content {
     margin-left: 0 !important;
@@ -45,6 +49,7 @@
    .menu_btn {
     width: 100px;
     padding: 10px;
+    margin-top: 10px;
     background-color: white;
     font-weight: 700;
    }
@@ -57,7 +62,7 @@
     color: white;
    }
    .withdraw_content {
-    padding: 40px;
+    padding: 25px;
    }
    .content_title {
     font-size: 1.3rem;
@@ -107,20 +112,55 @@
    .form-control:focus {
     border: 1px solid rgb(250, 200, 10);
    }
+   .coin_icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+   }
+   .important_notice {
+    color: red;
+   }
+   .fonticon-wrap {
+    margin: 7px;
+    position: absolute;
+    font-size: 25px;
+    left: 5px;
+    color: black;
+   }
+   .two_desc {
+    margin-bottom: 25px;
+    display: flex;
+   }
+   .feather-circle {
+    margin: 5px;
+   }
  </style>
 <div class="main">
-    <div>
-        <div class="row crypto_content">
-          <div class="col-sm-7 text-center title align-center justify-content-center">
-              <p>Tether USD</p>
-              <p id="balance" class="mt-2"> {{$balance ? $balance : 0.00}} <span> USDT</span></p>
-            </div>
-          <div class="col-sm-5 d-flex menu">
-                      <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
-                      <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
+      <a href="{{url('/')}}" class="fonticon-wrap">
+        <i class="feather icon-arrow-left"></i>
+      </a>
+      <div class="row crypto_content p-2">
+        <div class="text-center title align-center justify-content-center">
+            <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
+            <p id="balance" class="text-left"> 1235678
+             </p>
+            <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
           </div>
+        <div class="d-flex menu">
+                    <a href="{{url('deposit-page')}}" class="btn menu_btn " >Deposit</a>
+                    <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
         </div>
+      </div>
         <div class="withdraw_content">
+            <div class="two_desc">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>
+              <div>
+                  You have to turn on 2-Factor Authentication in order to make any withdrawals. 
+                  <a href="#">
+                      Turn on 2-Factor Authentication now.
+                  </a> 
+              </div>
+            </div>
             <div class="content_title">IMPORTANT NOTICE</div>
             <div>
                 <div class="d-flex w-75 notice_item">
@@ -145,18 +185,20 @@
                 <option>BNB Smart Chain(BEP20)</option>
               </select>
             </div>
+            <div class="important_notice">
+                Please note that you do not mistake the network, if you deposit via another network  your assets may be lost.
+            </div>
             <div class="content_title mt-2">AMOUNT</div>
             <input type="text" class="amount_input" placeholder="0.00" />
             <div class="content_title mt-2">TETHER USD ADDRESS</div>
             <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
+            <div class="content_title mt-2">2-FA code(from Google 2-Factor Authenticator app)</div>
+            <input type="text" class="address_input " placeholder="ENTERE 2-FA code(for https://dashboard.ultimopay.io)" />
         
             <div class="mt-2">
               <button class="btn content_btn">WITHDRAW</button>
-
             </div>
         </div>
-    </div>
-
 </div>
 
   {{-- Data list view end --}}
