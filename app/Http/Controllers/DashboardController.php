@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     // Dashboard - Analytics
     public function home(Request $request) {
-        return view('/pages/withdraw', [
+        return view('/pages/home', [
             'balance' => 0,
             // // 'breadcrumbs' => $breadcrumbs,
             // 'products' => $files,
@@ -22,6 +22,16 @@ class DashboardController extends Controller
     public function depositPage(Request $request) {
 
         return view('/pages/deposit', [
+            'balance' => 0,
+            // // 'breadcrumbs' => $breadcrumbs,
+            // 'products' => $files,
+            // 'merchants' => $merchants
+
+        ]);
+    }
+    public function withdrawPage(Request $request) {
+
+        return view('/pages/withdraw', [
             'balance' => 0,
             // // 'breadcrumbs' => $breadcrumbs,
             // 'products' => $files,

@@ -15,6 +15,7 @@
 
 @section('content')
  <style>
+  
    #DataTables_Table_0_length select{
       width: 50;
       height: 30;
@@ -73,8 +74,8 @@
     border: none;
     border-radius: 10px;
     background: rgb(250, 200, 10);
-    padding: 20px;
-    font-size: 1.5rem;
+    padding: 15px;
+    font-size: 1rem;
     color: black;
     font-weight: bold;
    }
@@ -82,8 +83,8 @@
     width: 100%;
     border: none;
     border-bottom: 1px solid rgb(250, 200, 10);
-    padding: 20px;
-    font-size: 1.5rem;
+    padding: 15px;
+    font-size: 1rem;
     color: black;
    }
    .address_input:focus-visible, .amount_input:focus-visible {
@@ -115,10 +116,8 @@
               <p id="balance" class="mt-2"> {{$balance ? $balance : 0.00}} <span> USDT</span></p>
             </div>
           <div class="col-sm-5 d-flex menu">
-              <div class="">
                       <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
                       <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
-              </div>
           </div>
         </div>
         <div class="withdraw_content">
@@ -137,12 +136,8 @@
                     <div class="right_side">USDT</div>
                 </div>
             </div>
-            <h2 class="mt-2">AMOUNT</h2>
-            <input type="text" class="amount_input" placeholder="0.00" />
-            <h2 class="mt-2">TETHER USD ADDRESS</h2>
-            <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
             <div class="form-group mt-2 ">
-              <label>Network</label>
+              <div class="content_title">Network</div>
               <select class="form-control network_select">
                 <option>--Select Network--</option>
                 <option>Ethereum(ERC20)</option>
@@ -150,6 +145,11 @@
                 <option>BNB Smart Chain(BEP20)</option>
               </select>
             </div>
+            <div class="content_title mt-2">AMOUNT</div>
+            <input type="text" class="amount_input" placeholder="0.00" />
+            <div class="content_title mt-2">TETHER USD ADDRESS</div>
+            <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
+        
             <div class="mt-2">
               <button class="btn content_btn">WITHDRAW</button>
 

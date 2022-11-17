@@ -124,15 +124,13 @@
               <p id="balance" class="mt-2"> {{$balance ? $balance : 0.00}} <span> USDT</span></p>
             </div>
           <div class="col-sm-5 d-flex menu">
-              <div class="">
                       <a href="{{url('deposit-page')}}" class="btn menu_btn active" >Deposit</a>
                       <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
-              </div>
           </div>
         </div>
         <div class="deposit_content p-2">
           <div class="form-group mt-2 ">
-            <label>Network</label>
+            <div class="content_title">Network</div>
             <select class="form-control network_select">
               <option value="none">--Select Network--</option>
               <option value="Ethereum">Ethereum(ERC20)</option>
