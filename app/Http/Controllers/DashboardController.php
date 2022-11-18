@@ -11,13 +11,16 @@ class DashboardController extends Controller
 {
     // Dashboard - Analytics
     public function home(Request $request) {
+        $email = $request->query('email');
+        $merchant = $request->query('merchant', env("MERCHANT"));
+
         $api_key = 'Bearer ' . env("API_KEY");
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Authorization' => $api_key
         ])->post("https://api.ultimopay.io/v1/getAuthToken/",  [
-            'email_address' => "minamide@optlynx.com",
-            'merchant' => env("MERCHANT"),
+            'email_address' => $email,
+            'merchant' => $merchant
          ]);
         if ($response["result"] === "success") {
             # code...
