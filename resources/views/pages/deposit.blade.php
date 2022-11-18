@@ -138,7 +138,7 @@
         <div class="row crypto_content p-2">
           <div class="text-center title align-center justify-content-center">
               <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
-              <p id="balance" class="text-left"> 1235678
+              <p id="balance" class="text-left">  {{$balance}} 
                </p>
               <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
             </div>
@@ -152,9 +152,9 @@
             <div class="content_title">NETWORK</div>
             <select class="form-control network_select">
               <option value="none">--Select Network--</option>
-              <option value="Ethereum">Ethereum(ERC20)</option>
-              <option value="Tron">Tron(TRC20)</option>
-              <option value="Binance">BNB Smart Chain(BEP20)</option>
+              <option value="ETHEREUM_ERC20">Ethereum(ERC20)</option>
+              <option value="TRON_TRC20">Tron(TRC20)</option>
+              <option value="BNB_SMART_CHAIN_BEP20">BNB Smart Chain(BEP20)</option>
             </select>
           </div>
         </div>

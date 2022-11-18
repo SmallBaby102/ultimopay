@@ -142,7 +142,7 @@
       <div class="row crypto_content p-2">
         <div class="text-center title align-center justify-content-center">
             <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
-            <p id="balance" class="text-left"> 1235678
+            <p id="balance" class="text-left">  {{$balance}} 
              </p>
             <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
           </div>

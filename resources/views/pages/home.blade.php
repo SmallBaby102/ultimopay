@@ -96,7 +96,7 @@
               </div>
             </div>
             <div class="text-right"> 
-              <div id="balance" class="coin_balance text-right"> 124142354 </div>
+              <div id="balance" class="coin_balance text-right"> {{$balance}} </div>
               <div class="d-flex menu ">
                         <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
                         <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>

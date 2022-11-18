@@ -11,70 +11,106 @@ class DashboardController extends Controller
 {
     // Dashboard - Analytics
     public function home(Request $request) {
-        return view('/pages/home', [
-            'balance' => 0,
-            // // 'breadcrumbs' => $breadcrumbs,
-            // 'products' => $files,
-            // 'merchants' => $merchants
+        $api_key = 'Bearer ' . env("API_KEY");
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/getAuthToken/",  [
+            'email_address' => "minamide@optlynx.com",
+            'merchant' => env("MERCHANT"),
+         ]);
+        if ($response["result"] === "success") {
+            # code...
+            $request->session()->put('auth_token', $response['authResponse']['auth_token']);
+            $request->session()->put('wallet_auth_token', $response['authResponse']['wallet_auth_token']);
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => "minamide@optlynx.com",
+                'auth_token' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
+             ]);
+             if ($response1["result"] === "success") {
+                return view('/pages/home', [
+                    'balance' => $response1['wallet'][0]['balance'],
+                    // // 'breadcrumbs' => $breadcrumbs,
+                    // 'products' => $files,
+                    // 'merchants' => $merchants
+        
+                ]);
+             } else {
+                echo json_encode($response1);
 
-        ]);
+             }
+            
+        } else {
+            echo json_encode("error in get auth token".$response);
+        }
     }
     public function depositPage(Request $request) {
+        $api_key = 'Bearer ' . env("API_KEY");
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+            'email_address' => "minamide@optlynx.com",
+            'auth_token' =>$request->session()->get("auth_token"),
+            'currency' => "USDT"
+         ]);
+         if ($response1["result"] === "success") {
+            return view('/pages/deposit', [
+                'balance' => $response1['wallet'][0]['balance'],
+                // // 'breadcrumbs' => $breadcrumbs,
+                // 'products' => $files,
+                // 'merchants' => $merchants
+    
+            ]);
+         } else {
+            echo json_encode($response1);
 
-        return view('/pages/deposit', [
-            'balance' => 0,
-            // // 'breadcrumbs' => $breadcrumbs,
-            // 'products' => $files,
-            // 'merchants' => $merchants
-
-        ]);
+         }
     }
     public function withdrawPage(Request $request) {
+        $api_key = 'Bearer ' . env("API_KEY");
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+            'email_address' => "minamide@optlynx.com",
+            'auth_token' =>$request->session()->get("auth_token"),
+            'currency' => "USDT"
+         ]);
+         if ($response1["result"] === "success") {
+            return view('/pages/withdraw', [
+                'balance' => $response1['wallet'][0]['balance'],
+                // // 'breadcrumbs' => $breadcrumbs,
+                // 'products' => $files,
+                // 'merchants' => $merchants
+    
+            ]);
+         } else {
+            echo json_encode($response1);
 
-        return view('/pages/withdraw', [
-            'balance' => 0,
-            // // 'breadcrumbs' => $breadcrumbs,
-            // 'products' => $files,
-            // 'merchants' => $merchants
-
-        ]);
+         }
     }
     public function getDepositAddress(Request $request , $network, $email) {
-        $deposit_address = DepositAddress::where("email", $email)->where('network', $network)->first();
-        if(!$deposit_address || !$deposit_address["address"]){
-            $authorization_value = "Bearer " . "eyJraWQiOiJsMHQ0V0RrSVNOenJwYnRqQlZVR0tRVVE4N0c4aTQ1RlVnK2luT0FBOXhNPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI3ODgxODU0MS1jMWU1LTQ2YmMtYjQ0MS0yMjcwNGY0ZGU4MzAiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9HTU83QnRGSlYiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiI2YjduYTI2NGF1b2tpOHY5dGZyZzFiZTkxbiIsImV2ZW50X2lkIjoiMDU4ZTdhOTUtYjE2Ni00ZDM0LTlhZTctYTE3ZjJmMmEwNWRjIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiBvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImF1dGhfdGltZSI6MTY2ODUwMTAzNCwiZXhwIjoxNjY4NTA0NjM0LCJpYXQiOjE2Njg1MDEwMzQsImp0aSI6IjA1NDk0ZGQzLTNiNGEtNDUwZS1iMzVhLWViMjM1MjQ5YTNkZiIsInVzZXJuYW1lIjoiNzg4MTg1NDEtYzFlNS00NmJjLWI0NDEtMjI3MDRmNGRlODMwIn0.KgxIvm5sD1B38FxenzCc7Z8UMVHs7AaYJW7mvw-jgUcSGFJIuLyColVIqzEsq8w0dKFVR_VxZvRrypI57qkIL5pfqVYFKB5i1Njnsu4MsJhOmP1dvS-82tqsXMwU82mfnUmSzFjo69M6H1pGORdadpoU8EJLg0zkRddy7osQwWS--wokIUqNLynr9_cL02qxfwYP0uQk3_hApPnlD0b4ZPpL7QdiWBbh25GmHP86P-gOkqlFBkBcxTJfmHVrrIrIvNThqpxL7IctggeHT93KIQwwz6QYWMR1V2HjmvCkNLbGMbeeWYr06OaW3zAVAh48xGSI0UNJoMvBhKxpr7tz4w";
-            $flag = true;
-            // while ($flag) {
-            //     # code...
-            //     $response = Http::withHeaders([
-            //         'Content-Type' => 'application/json',
-            //         'Authorization' => $authorization_value
-            //     ])->post('https://api.cryptosrvc.com/wallet/deposit/create', [
-            //         "exchange" => "PLUSQO",
-            //         "network" => $network,
-            //         "product" => "USDT"
-            //     ]);
-            //     if($response["success"]) {
-            //         # code...
-            //         $txid = $response['txid'];
-            //         $state_hash = $response['state_hash'];
-            //         $response2 = Http::withHeaders([
-            //             'Authorization' => $authorization_value
-            //         ])->get("https://api.cryptosrvc.com/wallet/transaction/status?txid={$txid}&state_hash={$state_hash}&timeout=10000");
-            //         if ($response2["address"]) {
-            //             # code...
-            //             if(!$deposit_address)                
-            //             $deposit_address = new DepositAddress;
-            //             $deposit_address->email = $email;
-            //             $deposit_address->network = $network;
-            //             $deposit_address->address = $response2["address"];
-            //             $deposit_address->save();
-            //             return $response2["address"];
-            //         }
-            //     } 
-            // }
-        }
-        return $deposit_address['address'];
+        $api_key = 'Bearer ' . env("API_KEY");
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/deposit/",  [
+            'email_address' => "minamide@optlynx.com",
+            'wallet_auth_token' =>$request->session()->get("wallet_auth_token"),
+            'currency' => "USDT",
+            'network' => $network,
+         ]);
+         if ($response1["result"] === "success") {
+            return $response1["depositResponse"]["address"];
+         } else {
+            echo json_encode($response1["error"]["errorMessage"]);
+
+         }
     }
     public function login(Request $request){
 
