@@ -40,12 +40,29 @@ class DashboardController extends Controller
         
                 ]);
              } else {
-                echo json_encode($response1);
-
+                $response2 = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $api_key
+                ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                    'email_address' => "minamide@optlynx.com",
+                    'auth_token' =>$request->session()->get("auth_token"),
+                    'currency' => "USDT"
+                 ]);
+                 if ($response2["result"] === "success") {
+                    return view('/pages/home', [
+                        'balance' => $response2['wallet'][0]['balance'],
+                        // // 'breadcrumbs' => $breadcrumbs,
+                        // 'products' => $files,
+                        // 'merchants' => $merchants
+            
+                    ]);
+                 } else {
+                    return "Your session was expired. Please re-login @merchant and try again.";
+                 }
              }
             
         } else {
-            echo json_encode("error in get auth token".$response);
+            return $response["error"]["errorMessage"];
         }
     }
     public function depositPage(Request $request) {
@@ -67,7 +84,7 @@ class DashboardController extends Controller
     
             ]);
          } else {
-            echo json_encode($response1);
+            return "Your session was expired. Please re-login @merchant and try again.";
 
          }
     }
@@ -90,8 +107,7 @@ class DashboardController extends Controller
     
             ]);
          } else {
-            echo json_encode($response1);
-
+            return "Your session was expired. Please re-login @merchant and try again.";
          }
     }
     public function getDepositAddress(Request $request , $network, $email) {
