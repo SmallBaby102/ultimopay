@@ -13,7 +13,7 @@ $configData = Helper::applClasses();
     <!-- BEGIN: Header-->
     <div class="content-overlay"></div>
     {{-- <div class="header-navbar-shadow"></div> --}}
-    <a href="{{url('/')}}"  class="logo" style="position: absolute; left:20px">
+    <a href="{{url('/?email='.$email.'&merchant='.$merchant)}}"  class="logo" style="position: absolute; left:20px">
       <img src="images/logo/ultimov2-logo.png" style="width: 130px" alt="">
     </a>
     {{-- Include Navbar --}}

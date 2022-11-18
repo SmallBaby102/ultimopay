@@ -13,6 +13,8 @@ class DashboardController extends Controller
     public function home(Request $request) {
         $email = $request->query('email');
         $merchant = $request->query('merchant', env("MERCHANT"));
+        $request->session()->put('email',  $email);
+        $request->session()->put('merchant',$merchant);
 
         $api_key = 'Bearer ' . env("API_KEY");
         $response = Http::withHeaders([
@@ -30,16 +32,15 @@ class DashboardController extends Controller
                 'Content-Type' => 'application/json',
                 'Authorization' => $api_key
             ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-                'email_address' => "minamide@optlynx.com",
+                'email_address' => $email,
                 'auth_token' =>$request->session()->get("auth_token"),
                 'currency' => "USDT"
              ]);
              if ($response1["result"] === "success") {
                 return view('/pages/home', [
                     'balance' => $response1['wallet'][0]['balance'],
-                    // // 'breadcrumbs' => $breadcrumbs,
-                    // 'products' => $files,
-                    // 'merchants' => $merchants
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
         
                 ]);
              } else {
@@ -47,25 +48,35 @@ class DashboardController extends Controller
                     'Content-Type' => 'application/json',
                     'Authorization' => $api_key
                 ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-                    'email_address' => "minamide@optlynx.com",
+                    'email_address' => $email,
                     'auth_token' =>$request->session()->get("auth_token"),
                     'currency' => "USDT"
                  ]);
                  if ($response2["result"] === "success") {
                     return view('/pages/home', [
                         'balance' => $response2['wallet'][0]['balance'],
-                        // // 'breadcrumbs' => $breadcrumbs,
-                        // 'products' => $files,
-                        // 'merchants' => $merchants
+                        'email' =>  $request->session()->get("email"),
+                        'merchant' => $request->session()->get("merchant"),
             
                     ]);
                  } else {
-                    return "Your session was expired. Please re-login @merchant and try again.";
+                    return view('/pages/home', [
+                         'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                         'email' =>  $request->session()->get("email"),
+                        'merchant' => $request->session()->get("merchant"),
+            
+                    ]);
+                   
                  }
              }
             
         } else {
-            return $response["error"]["errorMessage"];
+            return view('/pages/home', [
+                 'error' =>  $response["error"]["errorMessage"],
+                 'email' =>  $request->session()->get("email"),
+                 'merchant' => $request->session()->get("merchant"),
+    
+            ]);
         }
     }
     public function depositPage(Request $request) {
@@ -74,21 +85,24 @@ class DashboardController extends Controller
             'Content-Type' => 'application/json',
             'Authorization' => $api_key
         ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-            'email_address' => "minamide@optlynx.com",
+            'email_address' => $request->session()->get("email"),
             'auth_token' =>$request->session()->get("auth_token"),
             'currency' => "USDT"
          ]);
          if ($response1["result"] === "success") {
             return view('/pages/deposit', [
                 'balance' => $response1['wallet'][0]['balance'],
-                // // 'breadcrumbs' => $breadcrumbs,
-                // 'products' => $files,
-                // 'merchants' => $merchants
+                 'email' => $request->session()->get("email"),
+                 'merchant' => $request->session()->get("merchant"),
     
             ]);
          } else {
-            return "Your session was expired. Please re-login @merchant and try again.";
-
+            return view('/pages/deposit', [
+                 'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                 'email' =>  $request->session()->get("email"),
+                 'merchant' => $request->session()->get("merchant"),
+    
+            ]);
          }
     }
     public function withdrawPage(Request $request) {
@@ -97,20 +111,22 @@ class DashboardController extends Controller
             'Content-Type' => 'application/json',
             'Authorization' => $api_key
         ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-            'email_address' => "minamide@optlynx.com",
+            'email_address' => $request->session()->get("email"),
             'auth_token' =>$request->session()->get("auth_token"),
             'currency' => "USDT"
          ]);
          if ($response1["result"] === "success") {
             return view('/pages/withdraw', [
                 'balance' => $response1['wallet'][0]['balance'],
-                // // 'breadcrumbs' => $breadcrumbs,
-                // 'products' => $files,
-                // 'merchants' => $merchants
-    
-            ]);
+                'email' =>  $request->session()->get("email"),
+                'merchant' => $request->session()->get("merchant"),
+               ]);
          } else {
-            return "Your session was expired. Please re-login @merchant and try again.";
+            return view('/pages/withdraw', [
+                 'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                'email' =>  $request->session()->get("email"),
+                'merchant' => $request->session()->get("merchant"),
+            ]);
          }
     }
     public function getDepositAddress(Request $request , $network, $email) {
@@ -119,7 +135,7 @@ class DashboardController extends Controller
             'Content-Type' => 'application/json',
             'Authorization' => $api_key
         ])->post("https://api.ultimopay.io/v1/deposit/",  [
-            'email_address' => "minamide@optlynx.com",
+            'email_address' => $request->session()->get("email"),
             'wallet_auth_token' =>$request->session()->get("wallet_auth_token"),
             'currency' => "USDT",
             'network' => $network,

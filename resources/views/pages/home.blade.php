@@ -82,28 +82,40 @@
    .coin_name div {
         font-size: 1rem;
    }
+   .error {
+        font-size: 1.5rem;
+        text-align: center;
+        margin: 20px;
+   }
  </style>
 <div class="main header p-1 pt-5">
 </div>
-    <div class="row m-2 mt-5 p-1 pl-3 pr-3 justify-content-between" style="background-color: white; color: black">
-            <div class="d-flex justify-content-between">
-              <div class="d-flex">
+@if (isset($error))
+    <div class="error">
+        {{ $error }}
+    </div>
+@else
+        <div class="row m-2 mt-5 p-1 pl-3 pr-3 justify-content-between" style="background-color: white; color: black">
+                <div class="d-flex justify-content-between">
+                <div class="d-flex">
                 <img src="/images/logo/usdt.png" class="coin_img" alt="">
                 <div  class="coin_name ">Tether USD 
                         <div style="margin-left: 2px">USDT</div>
                 </div>
                 
-              </div>
-            </div>
-            <div class="text-right"> 
-              <div id="balance" class="coin_balance text-right"> {{$balance}} </div>
-              <div class="d-flex menu ">
+                </div>
+                </div>
+                <div class="text-right"> 
+                <div id="balance" class="coin_balance text-right"> {{$balance}} </div>
+                <div class="d-flex menu ">
                         <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
                         <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
                 </div>
-            </div>
-          
-    </div>
+                </div>
+        
+        </div>
+@endif
+ 
 
 @endsection
 

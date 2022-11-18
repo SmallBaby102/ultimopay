@@ -28,6 +28,7 @@
     padding: 10px;
     background-color: rgb(250, 200, 10);
     justify-content: space-between;
+    min-height: 50px;
    }
    .title {
     font-size: 30px;
@@ -121,7 +122,7 @@
     color: red;
    }
    .fonticon-wrap {
-    margin: 7px;
+    margin: 5px;
     position: absolute;
     font-size: 25px;
     left: 5px;
@@ -134,171 +135,89 @@
    .feather-circle {
     margin: 5px;
    }
+   .error {
+        font-size: 1.5rem;
+        text-align: center;
+        margin: 20px;
+   }
  </style>
-<div class="main">
-      <a href="{{url('/')}}" class="fonticon-wrap">
-        <i class="feather icon-arrow-left"></i>
-      </a>
-      <div class="row crypto_content p-2">
-        <div class="text-center title align-center justify-content-center">
-            <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
-            <p id="balance" class="text-left">  {{$balance}} 
-             </p>
-            <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
+
+  <div class="main">
+        <a href="{{url('/?email='.$email.'&merchant='.$merchant)}}" class="fonticon-wrap">
+          <i class="feather icon-arrow-left"></i>
+        </a>
+        @if (isset($error))
+          <div class="row crypto_content p-2">
           </div>
-        <div class="d-flex menu">
-                    <a href="{{url('deposit-page')}}" class="btn menu_btn " >Deposit</a>
-                    <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
-        </div>
-      </div>
-        <div class="withdraw_content">
-            <div class="two_desc">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>
-              <div>
-                  You have to turn on 2-Factor Authentication in order to make any withdrawals. 
-                  <a href="#">
-                      Turn on 2-Factor Authentication now.
-                  </a> 
+          <div class="error">
+                {{ $error }}
+          </div>
+        @else
+            <div class="row crypto_content p-2">
+              <div class="text-center title align-center justify-content-center">
+                  <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
+                  <p id="balance" class="text-left">  {{$balance}} 
+                  </p>
+                  <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
+                </div>
+              <div class="d-flex menu">
+                          <a href="{{url('deposit-page')}}" class="btn menu_btn " >Deposit</a>
+                          <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
               </div>
             </div>
-            <div class="content_title">IMPORTANT NOTICE</div>
-            <div>
-                <div class="d-flex w-75 notice_item">
-                  <div class="left_side">Minimum withdrawal amount(including fees)</div>
-                  <div class="right_side">USDT</div>
-                </div>
-                <div class="d-flex w-75 notice_item">
-                    <div class="left_side">Withdraw fee</div>
-                    <div class="right_side">USDT + 0.1% of withdraw amount</div>
-                </div>
-                <div class="d-flex w-75 notice_item">
-                    <div class="left_side">Available amount for withdrawal(including fees)</div>
-                    <div class="right_side">USDT</div>
-                </div>
-            </div>
-            <div class="form-group mt-2 ">
-              <div class="content_title">NETWORK</div>
-              <select class="form-control network_select">
-                <option>--Select Network--</option>
-                <option>Ethereum(ERC20)</option>
-                <option>Tron(TRC20)</option>
-                <option>BNB Smart Chain(BEP20)</option>
-              </select>
-            </div>
-            <div class="important_notice">
-                Please note that you do not mistake the network, if you deposit via another network  your assets may be lost.
-            </div>
-            <div class="content_title mt-2">AMOUNT</div>
-            <input type="text" class="amount_input" placeholder="0.00" />
-            <div class="content_title mt-2">TETHER USD ADDRESS</div>
-            <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
-            <div class="content_title mt-2">2-FA code(from Google 2-Factor Authenticator app)</div>
-            <input type="text" class="address_input " placeholder="ENTERE 2-FA code(for https://dashboard.ultimopay.io)" />
-        
-            <div class="mt-2">
-              <button class="btn content_btn">WITHDRAW</button>
-            </div>
-        </div>
+              <div class="withdraw_content">
+                  <div class="two_desc">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>
+                    <div>
+                        You have to turn on 2-Factor Authentication in order to make any withdrawals. 
+                        <a href="#">
+                            Turn on 2-Factor Authentication now.
+                        </a> 
+                    </div>
+                  </div>
+                  <div class="content_title">IMPORTANT NOTICE</div>
+                  <div>
+                      <div class="d-flex w-75 notice_item">
+                        <div class="left_side">Minimum withdrawal amount(including fees)</div>
+                        <div class="right_side">USDT</div>
+                      </div>
+                      <div class="d-flex w-75 notice_item">
+                          <div class="left_side">Withdraw fee</div>
+                          <div class="right_side">USDT + 0.1% of withdraw amount</div>
+                      </div>
+                      <div class="d-flex w-75 notice_item">
+                          <div class="left_side">Available amount for withdrawal(including fees)</div>
+                          <div class="right_side">USDT</div>
+                      </div>
+                  </div>
+                  <div class="form-group mt-2 ">
+                    <div class="content_title">NETWORK</div>
+                    <select class="form-control network_select">
+                      <option>--Select Network--</option>
+                      <option>Ethereum(ERC20)</option>
+                      <option>Tron(TRC20)</option>
+                      <option>BNB Smart Chain(BEP20)</option>
+                    </select>
+                  </div>
+                  <div class="important_notice">
+                      Please note that you do not mistake the network, if you deposit via another network  your assets may be lost.
+                  </div>
+                  <div class="content_title mt-2">AMOUNT</div>
+                  <input type="text" class="amount_input" placeholder="0.00" />
+                  <div class="content_title mt-2">TETHER USD ADDRESS</div>
+                  <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
+                  <div class="content_title mt-2">2-FA code(from Google 2-Factor Authenticator app)</div>
+                  <input type="text" class="address_input " placeholder="ENTERE 2-FA code(for https://dashboard.ultimopay.io)" />
+              
+                  <div class="mt-2">
+                    <button class="btn content_btn">WITHDRAW</button>
+                  </div>
+              </div>
+        @endif
 </div>
-
   {{-- Data list view end --}}
 @endsection
 
-<div class="modal text-left" id="confirmDialog" tabindex="-1" role="dialog"
-aria-labelledby="myModalLabel130" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-  <div class="modal-content">
-    <div class="modal-header bg-info white">
-      <h5 class="modal-title" id="myModalLabel130">Confirmation Modal</h5>
-      <button type="button" class="close"  id="closeConfirm" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body p-3">
-      <div class="d-flex justify-content-around">
-        <div>
-          <p>File Name: </p>
-          <p>Merchant:</p>
-          <p>Total Amount of uploaded file: </p>
-        </div>
-        <div>
-            <p id="filename" class=""> </p>
-            <p id="selectedMerchant"  class=""></p>
-            <div class="d-flex">
-              <p id="totalAmount" ></p><span>&nbsp; USDT</span>
-            </div>
-           
-            
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-info" id="uploadConfirm" >Confirm</button>
-      <button type="button" class="btn btn-gray" id="uploadCancel" >Cancel</button>
-    </div>
-  </div>
-</div>
-</div>
- {{-- Modal --}}
- <div class="modal text-left" id="errorDialog" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel120" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-danger white">
-        <h5 class="modal-title" id="myModalLabel120">Error</h5>
-        <button type="button" class="close"  aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="errorBody">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-gray" id="closeErrorModal" >Close</button>
-      </div>
-    </div>
-  </div>
-  </div>
- {{-- Modal --}}
- <div class="modal text-left" id="detailDialog" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel120" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-    <div class="modal-content" style="max-height: inherit">
-      <div class="modal-header bg-info white d-flex justify-content-around">
-        <h5 class="modal-title" id="detailModalName"></h5>
-        <div class="d-flex">
-          <span>Success:  &nbsp;</span>
-          <h6 class="modal-title" id="detailModalSuccessCount"></h6>
-        </div>
-        <div class="d-flex">
-          <span>Fail:  &nbsp;</span>
-          <h6 class="modal-title" id="detailModalFailCount"></h6>
-        </div>
-      </div>
-      <div class="modal-body" id="detailBody">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Num</th>
-                <th>User ID</th>
-                <th>Amount</th>
-                <th>Result</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="file_detail">
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-gray" id="closeDetailModal" >Close</button>
-      </div>
-    </div>
-  </div>
-  </div>
 @section('vendor-script')
 {{-- vendor js files --}}
         <script src="{{ asset(mix('vendors/js/extensions/dropzone.min.js')) }}"></script>
