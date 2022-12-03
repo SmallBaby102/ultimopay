@@ -115,11 +115,6 @@ class DashboardController extends Controller
             'auth_token' =>$request->session()->get("auth_token"),
             'currency' => "USDT"
          ]);
-         return view('/pages/withdraw', [
-            'balance' => 222,
-            'email' => "test",
-            'merchant' => "test",
-           ]);
          if ($response1["result"] === "success") {
             return view('/pages/withdraw', [
                 'balance' => $response1['wallet'][0]['balance'],
