@@ -115,6 +115,11 @@ class DashboardController extends Controller
             'auth_token' =>$request->session()->get("auth_token"),
             'currency' => "USDT"
          ]);
+         return view('/pages/withdraw', [
+            'balance' => 222,
+            'email' => "test",
+            'merchant' => "test",
+           ]);
          if ($response1["result"] === "success") {
             return view('/pages/withdraw', [
                 'balance' => $response1['wallet'][0]['balance'],
@@ -128,6 +133,22 @@ class DashboardController extends Controller
                 'merchant' => $request->session()->get("merchant"),
             ]);
          }
+    }
+    public function twoFa(Request $request) {
+        $api_key = 'Bearer ' . env("API_KEY");
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+            'email_address' => $request->session()->get("email"),
+            'auth_token' =>$request->session()->get("auth_token"),
+            'currency' => "USDT"
+         ]);
+         return view('/pages/2fa', [
+            'balance' => 222,
+            'email' => "test",
+            'merchant' => "test",
+           ]);
     }
     public function getDepositAddress(Request $request , $network, $email) {
         $api_key = 'Bearer ' . env("API_KEY");

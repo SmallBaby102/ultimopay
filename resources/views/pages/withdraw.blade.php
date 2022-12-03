@@ -99,7 +99,7 @@
    .left_side {
      width: 60%;
      padding: 5px;
-     border-right: 1px solid rgb(119, 117, 117);
+     /* border-right: 1px solid rgb(119, 117, 117); */
      
    }
    .right_side {
@@ -108,7 +108,9 @@
      padding-left: 20px;
    }
    .notice_item {
-    border-bottom: 1px solid rgb(119, 117, 117);
+    font-size: .9rem;
+    margin: auto;
+    /* border-bottom: 1px solid rgb(119, 117, 117); */
    }
    .form-control:focus {
     border: 1px solid rgb(250, 200, 10);
@@ -170,26 +172,12 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>
                     <div>
                         You have to turn on 2-Factor Authentication in order to make any withdrawals. 
-                        <a href="#">
+                        <a href="{{url('2fa')}}">
                             Turn on 2-Factor Authentication now.
                         </a> 
                     </div>
                   </div>
-                  <div class="content_title">IMPORTANT NOTICE</div>
-                  <div>
-                      <div class="d-flex w-75 notice_item">
-                        <div class="left_side">Minimum withdrawal amount(including fees)</div>
-                        <div class="right_side">USDT</div>
-                      </div>
-                      <div class="d-flex w-75 notice_item">
-                          <div class="left_side">Withdraw fee</div>
-                          <div class="right_side">USDT + 0.1% of withdraw amount</div>
-                      </div>
-                      <div class="d-flex w-75 notice_item">
-                          <div class="left_side">Available amount for withdrawal(including fees)</div>
-                          <div class="right_side">USDT</div>
-                      </div>
-                  </div>
+                  
                   <div class="form-group mt-2 ">
                     <div class="content_title">NETWORK</div>
                     <select class="form-control network_select">
@@ -200,10 +188,24 @@
                     </select>
                   </div>
                   <div class="important_notice">
-                      Please note that you do not mistake the network, if you deposit via another network  your assets may be lost.
+                      Please note that you do not mistake the network, if you withdraw via another network  your assets may be lost.
                   </div>
                   <div class="content_title mt-2">AMOUNT</div>
                   <input type="text" class="amount_input" placeholder="0.00" />
+                  <div class="mt-2">
+                      <div class="d-flex w-75 notice_item">
+                        <div class="left_side">Minimum withdrawal amount</div>
+                        <div class="right_side">100USDT</div>
+                      </div>
+                      <div class="d-flex w-75 notice_item">
+                          <div class="left_side">Withdraw fee</div>
+                          <div class="right_side">5USDT + 5% of withdraw amount</div>
+                      </div>
+                      <div class="d-flex w-75 notice_item">
+                          <div class="left_side">Available amount for withdrawal</div>
+                          <div class="right_side">USDT</div>
+                      </div>
+                  </div>
                   <div class="content_title mt-2">TETHER USD ADDRESS</div>
                   <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
                   <div class="content_title mt-2">2-FA code(from Google 2-Factor Authenticator app)</div>
