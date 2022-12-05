@@ -194,16 +194,16 @@
                   <input type="text" class="amount_input" placeholder="0.00" />
                   <div class="mt-2">
                       <div class="d-flex w-75 notice_item">
-                        <div class="left_side">Minimum withdrawal amount</div>
+                        <div class="left_side">Minimum amount</div>
                         <div class="right_side">100USDT</div>
                       </div>
                       <div class="d-flex w-75 notice_item">
                           <div class="left_side">Withdraw fee</div>
-                          <div class="right_side">5USDT + 5% of withdraw amount</div>
+                          <div class="right_side" id="withdraw_fee">5USDT + 5% of withdraw amount</div>
                       </div>
                       <div class="d-flex w-75 notice_item">
-                          <div class="left_side">Available amount for withdrawal</div>
-                          <div class="right_side">USDT</div>
+                          <div class="left_side">Available amount</div>
+                          <div class="right_side" id="available_amount">0USDT</div>
                       </div>
                   </div>
                   <div class="content_title mt-2">TETHER USD ADDRESS</div>
@@ -233,7 +233,8 @@
 @section('page-script')
         <script> 
             let base_url = '<?php echo url(""); ?>'
+            let balance = '<?php echo $balance ?>'
         </script>
         {{-- Page js files --}}
-        <script src="{{ asset(mix('js/scripts/ui/data-list-view.js')) }}"></script>
+        <script src="{{ asset('js/scripts/ui/withdraw.js') }}"></script>
 @endsection

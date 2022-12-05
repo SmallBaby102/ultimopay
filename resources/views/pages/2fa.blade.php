@@ -137,24 +137,7 @@
           <a href="{{url('/?email='.$email.'&merchant='.$merchant)}}" class="fonticon-wrap">
             <i class="feather icon-arrow-left"></i>
           </a>
-        @if (isset($error))
           <div class="row crypto_content p-2">
-          </div>
-          <div class="error">
-                {{ $error }}
-          </div>
-        @else
-          <div class="row crypto_content p-2">
-            <div class="text-center title align-center justify-content-center">
-                <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
-                <p id="balance" class="text-left">  {{$balance}} 
-                </p>
-                <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
-              </div>
-            <div class="d-flex menu">
-                        <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
-                        <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
-            </div>
           </div>
           <div class="title pl-2 pr-2">
               2-Factor Authentication
@@ -203,16 +186,15 @@
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
                 <div class="row p-2" style="width: 99%; border-radius: 30px; background: white; align-items: center; justify-content: center;">
                     <label class="d-flex ">
-                        By default, 2-Factor Authentication will be turned ON for withdrawals
+                        By default, 2-Factor Authentication will be turned ON for withdrawals.
+                        Once you set up 2-Factor Authentication, you can do the following actions.
                     </label>
-                    <label class="content_title mt-2">Withdrawals<br/>(default ON)</label>
-                    <input type="checkbox" class="code " placeholder="Enter the code" />
+                    <label class="content_title mt-2">Withdrawals<br/></label>
                 </div>
           </div>
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%;" >
               <button class="btn" id="btn-enable">Enable 2-FA</button>
           </div>
-      @endif
   </div>
   {{-- Data list view end --}}
 @endsection

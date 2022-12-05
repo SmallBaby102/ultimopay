@@ -15,7 +15,6 @@ class DashboardController extends Controller
         $merchant = $request->query('merchant', env("MERCHANT"));
         $request->session()->put('email',  $email);
         $request->session()->put('merchant',$merchant);
-
         $api_key = 'Bearer ' . env("API_KEY");
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -140,9 +139,8 @@ class DashboardController extends Controller
             'currency' => "USDT"
          ]);
          return view('/pages/2fa', [
-            'balance' => 222,
-            'email' => "test",
-            'merchant' => "test",
+            'email' => $request->session()->get("email"),
+            'merchant' =>  $request->session()->get("merchant"),
            ]);
     }
     public function getDepositAddress(Request $request , $network, $email) {
