@@ -110,6 +110,7 @@
                 <div class="d-flex menu ">
                         <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
                         <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
+                        <a href="{{url('buy-page')}}" class="btn menu_btn" >Buy</a>
                 </div>
                 </div>
         

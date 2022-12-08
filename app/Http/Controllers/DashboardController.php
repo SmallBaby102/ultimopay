@@ -6,7 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\DepositAddress;
-
+use GuzzleHttp\Exception\GuzzleException;
+require_once (app_path().'/includes/api/Payment.php');
+require_once (app_path().'/includes/api/Inquiry.php');
+require_once (app_path().'/includes/api/VoidRequest.php');
+require_once (app_path().'/includes/api/Settlement.php');
+require_once (app_path().'/includes/api/Refund.php');
 class DashboardController extends Controller
 {
     // Dashboard - Analytics
@@ -26,7 +31,6 @@ class DashboardController extends Controller
         if ($response["result"] === "success") {
             # code...
             $request->session()->put('auth_token', $response['authResponse']['auth_token']);
-            $request->session()->put('wallet_auth_token', $response['authResponse']['wallet_auth_token']);
             $response1 = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => $api_key
@@ -128,6 +132,19 @@ class DashboardController extends Controller
             ]);
          }
     }
+    public function buyPage(Request $request) {
+        try {
+                $payment = new \Payment();
+                $response = $payment->Execute();
+                echo "Response data : ".$response;
+                echo "\n";
+
+            } catch (GuzzleException $e) {
+                echo '\n Message: ' . $e->getMessage();
+            } catch (Exception $e) {
+                echo '\n Message: ' . $e->getMessage();
+            }
+    }
     public function twoFa(Request $request) {
         $api_key = 'Bearer ' . env("API_KEY");
         $response1 = Http::withHeaders([
@@ -150,7 +167,7 @@ class DashboardController extends Controller
             'Authorization' => $api_key
         ])->post("https://api.ultimopay.io/v1/deposit/",  [
             'email_address' => $request->session()->get("email"),
-            'wallet_auth_token' =>$request->session()->get("wallet_auth_token"),
+            'auth_token' =>$request->session()->get("auth_token"),
             'currency' => "USDT",
             'network' => $network,
          ]);
