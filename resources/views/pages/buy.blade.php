@@ -66,7 +66,8 @@
     padding: 25px;
    }
    .content_title {
-    font-size: 1.3rem;
+    text-align: left;
+    font-size: 1.1rem;
     font-weight: bold;
    }
    .content_btn {
@@ -120,6 +121,10 @@
     height: 50px;
     margin-right: 10px;
    }
+   .card_icon{
+    width: 66px;
+    height: 40px;
+   }
    .important_notice {
     color: red;
    }
@@ -134,14 +139,23 @@
     margin-bottom: 25px;
     display: flex;
    }
-   .feather-circle {
-    margin: 5px;
+   .buy-input {
+    display: flex;
+    position: relative;
+   }
+   .buy-input img {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: 25px;
+    height: 25px;
    }
    .error {
         font-size: 1.5rem;
         text-align: center;
         margin: 20px;
    }
+
  </style>
 
   <div class="main">
@@ -164,57 +178,38 @@
                 </div>
               <div class="d-flex menu">
                           <a href="{{url('deposit-page')}}" class="btn menu_btn " >Deposit</a>
-                          <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
-                          <a href="{{url('buy-page')}}" class="btn menu_btn " >Buy</a>
+                          <a href="{{url('withdraw-page')}}" class="btn menu_btn " >Withdraw</a>
+                          <a href="{{url('buy-page')}}" class="btn menu_btn active" >Buy with card</a>
               </div>
             </div>
               <div class="withdraw_content">
                   <div class="two_desc">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>
                     <div>
-                        You have to turn on 2-Factor Authentication in order to make any withdrawals. 
-                        <a href="{{url('2fa')}}">
-                            Turn on 2-Factor Authentication now.
-                        </a> 
+                        You can buy USDT with Credit Card or Debit card. The card brands that can be used are MasterCard and UnionPay.
+                        <br/>You will receive it instantly in your USDT wallet in your account.
                     </div>
                   </div>
-                  
-                  <div class="form-group mt-2 ">
-                    <div class="content_title">NETWORK</div>
-                    <select class="form-control network_select">
-                      <option>--Select Network--</option>
-                      <option>Ethereum(ERC20)</option>
-                      <option>Tron(TRC20)</option>
-                      <option>BNB Smart Chain(BEP20)</option>
-                    </select>
+                  <div class="w-75 m-auto text-center">
+                    <div class="content_title mt-2">YOU SPEND</div>
+                    <div class="buy-input">
+                      <input type="text" class="amount_input" id="spend_amount" placeholder="0.00" />
+                      <img alt="Icon" class="coin_icon"src="images/logo/usd.svg"/>  
+                    </div>
+                    <div class="content_title mt-2">YOU RECEIVE</div>
+                    <div class="buy-input">
+                      <input type="text" class="amount_input" id="receive_amount" placeholder="0.00" />
+                      <img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>
+                    </div>
+                    
+                    <div class="mt-2">
+                      <button class="btn content_btn">Buy with card</button>
+                    </div>
+                    <div class="mt-2 ">
+                      <img alt="Icon" class="card_icon"src="images/logo/mastercard.png"/>
+                      <img alt="Icon" class="card_icon"src="images/logo/unionpay.png"/>
+                    </div>
                   </div>
-                  <div class="important_notice">
-                      Please note that you do not mistake the network, if you withdraw via another network  your assets may be lost.
-                  </div>
-                  <div class="content_title mt-2">AMOUNT</div>
-                  <input type="text" class="amount_input" placeholder="0.00" />
-                  <div class="mt-2">
-                      <div class="d-flex w-75 notice_item">
-                        <div class="left_side">Minimum amount</div>
-                        <div class="right_side">100USDT</div>
-                      </div>
-                      <div class="d-flex w-75 notice_item">
-                          <div class="left_side">Withdraw fee</div>
-                          <div class="right_side" id="withdraw_fee">5USDT + 5% of withdraw amount</div>
-                      </div>
-                      <div class="d-flex w-75 notice_item">
-                          <div class="left_side">Available amount</div>
-                          <div class="right_side" id="available_amount">0USDT</div>
-                      </div>
-                  </div>
-                  <div class="content_title mt-2">TETHER USD ADDRESS</div>
-                  <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
-                  <div class="content_title mt-2">2-FA code(from Google 2-Factor Authenticator app)</div>
-                  <input type="text" class="address_input " placeholder="ENTERE 2-FA code(for https://dashboard.ultimopay.io)" />
-              
-                  <div class="mt-2">
-                    <button class="btn content_btn">WITHDRAW</button>
-                  </div>
+               
               </div>
         @endif
 </div>
@@ -234,8 +229,8 @@
 @section('page-script')
         <script> 
             let base_url = '<?php echo url(""); ?>'
-            let balance = '<?php echo $balance ?>'
+            let balance = '<?php echo isset($balance) ?  $balance : 0 ?>'
         </script>
         {{-- Page js files --}}
-        <script src="{{ asset('js/scripts/ui/withdraw.js') }}"></script>
+        <script src="{{ asset('js/scripts/ui/buy.js') }}"></script>
 @endsection

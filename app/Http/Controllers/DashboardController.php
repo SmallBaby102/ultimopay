@@ -133,17 +133,44 @@ class DashboardController extends Controller
          }
     }
     public function buyPage(Request $request) {
-        try {
-                $payment = new \Payment();
-                $response = $payment->Execute();
-                echo "Response data : ".$response;
-                echo "\n";
+        $api_key = 'Bearer ' . env("API_KEY");
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+            'email_address' => $request->session()->get("email"),
+            'auth_token' =>$request->session()->get("auth_token"),
+            'currency' => "USDT"
+         ]);
+         if ($response1["result"] === "success") {
+            return view('/pages/buy', [
+                'balance' => $response1['wallet'][0]['balance'],
+                'email' =>  $request->session()->get("email"),
+                'merchant' => $request->session()->get("merchant"),
+               ]);
+         } else {
+            // return view('/pages/buy', [
+            //     'balance' => 22,
+            //     'email' =>  $request->session()->get("email"),
+            //     'merchant' => $request->session()->get("merchant"),
+            //    ]);
+            return view('/pages/buy', [
+                 'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                'email' =>  $request->session()->get("email"),
+                'merchant' => $request->session()->get("merchant"),
+            ]);
+         }
+        // try {
+        //         $payment = new \Payment();
+        //         $response = $payment->Execute();
+        //         echo "Response data : ".$response;
+        //         echo "\n";
 
-            } catch (GuzzleException $e) {
-                echo '\n Message: ' . $e->getMessage();
-            } catch (Exception $e) {
-                echo '\n Message: ' . $e->getMessage();
-            }
+        //     } catch (GuzzleException $e) {
+        //         echo '\n Message: ' . $e->getMessage();
+        //     } catch (Exception $e) {
+        //         echo '\n Message: ' . $e->getMessage();
+        //     }
     }
     public function twoFa(Request $request) {
         $api_key = 'Bearer ' . env("API_KEY");

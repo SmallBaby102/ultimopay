@@ -168,8 +168,7 @@
                         </label>
                       </div>
                   </div>
-                  
-                
+                                 
                 </div>
           </div>
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
@@ -186,8 +185,7 @@
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
                 <div class="row p-2" style="width: 99%; border-radius: 30px; background: white; align-items: center; justify-content: center;">
                     <label class="d-flex ">
-                        By default, 2-Factor Authentication will be turned ON for withdrawals.
-                        Once you set up 2-Factor Authentication, you can do the following actions.
+                      Once you set up 2-Factor Authentication, you can do the following actions.
                     </label>
                     <label class="content_title mt-2">Withdrawals<br/></label>
                 </div>

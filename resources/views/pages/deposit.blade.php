@@ -157,7 +157,7 @@
             <div class="d-flex menu">
                         <a href="{{url('deposit-page')}}" class="btn menu_btn active" >Deposit</a>
                         <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
-                        <a href="{{url('buy-page')}}" class="btn menu_btn" >Buy</a>
+                        <a href="{{url('buy-page')}}" class="btn menu_btn" >Buy with card</a>
             </div>
           </div>
           <div class="deposit_content pl-2 pr-2">

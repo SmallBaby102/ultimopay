@@ -98,13 +98,13 @@
    }
    .left_side {
      width: 60%;
-     padding: 5px;
+     padding: 0px;
      /* border-right: 1px solid rgb(119, 117, 117); */
      
    }
    .right_side {
      width: 40%;
-     padding: 5px;
+     padding: 0px;
      padding-left: 20px;
    }
    .notice_item {
@@ -165,7 +165,7 @@
               <div class="d-flex menu">
                           <a href="{{url('deposit-page')}}" class="btn menu_btn " >Deposit</a>
                           <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
-                          <a href="{{url('buy-page')}}" class="btn menu_btn " >Buy</a>
+                          <a href="{{url('buy-page')}}" class="btn menu_btn " >Buy with card</a>
               </div>
             </div>
               <div class="withdraw_content">
@@ -196,15 +196,15 @@
                   <div class="mt-2">
                       <div class="d-flex w-75 notice_item">
                         <div class="left_side">Minimum amount</div>
-                        <div class="right_side">100USDT</div>
+                        <div class="right_side">100&#8202;USDT</div>
                       </div>
                       <div class="d-flex w-75 notice_item">
                           <div class="left_side">Withdraw fee</div>
-                          <div class="right_side" id="withdraw_fee">5USDT + 5% of withdraw amount</div>
+                          <div class="right_side" id="withdraw_fee">5&#8202;USDT + 5% of withdraw amount</div>
                       </div>
                       <div class="d-flex w-75 notice_item">
                           <div class="left_side">Available amount</div>
-                          <div class="right_side" id="available_amount">0USDT</div>
+                          <div class="right_side" id="available_amount">0&#8202;USDT</div>
                       </div>
                   </div>
                   <div class="content_title mt-2">TETHER USD ADDRESS</div>
@@ -212,7 +212,7 @@
                   <div class="content_title mt-2">2-FA code(from Google 2-Factor Authenticator app)</div>
                   <input type="text" class="address_input " placeholder="ENTERE 2-FA code(for https://dashboard.ultimopay.io)" />
               
-                  <div class="mt-2">
+                  <div class="mt-2 text-center">
                     <button class="btn content_btn">WITHDRAW</button>
                   </div>
               </div>
@@ -234,7 +234,7 @@
 @section('page-script')
         <script> 
             let base_url = '<?php echo url(""); ?>'
-            let balance = '<?php echo $balance ?>'
+            let balance = '<?php echo isset($balance) ?  $balance : 0 ?>'
         </script>
         {{-- Page js files --}}
         <script src="{{ asset('js/scripts/ui/withdraw.js') }}"></script>
