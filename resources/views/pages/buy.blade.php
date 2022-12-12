@@ -155,6 +155,12 @@
         text-align: center;
         margin: 20px;
    }
+   .buy_success_desc {
+      font-size: 25px;
+      text-align: center;
+      display: block;
+      margin-bottom: 20px;
+   }
 
  </style>
 
@@ -183,6 +189,11 @@
               </div>
             </div>
               <div class="withdraw_content">
+                  @if(isset($paymentConfirm))
+                  <div class="buy_success_desc success" >
+                        {{ $paymentConfirm }}
+                  </div>  
+                  @endif
                   <div class="two_desc">
                     <div>
                         You can buy USDT with Credit Card or Debit card. The card brands that can be used are MasterCard and UnionPay.
@@ -202,7 +213,7 @@
                     </div>
                     
                     <div class="mt-2">
-                      <button class="btn content_btn">Buy with card</button>
+                      <button class="btn content_btn" id="buy-with-card-btn" >Buy with card</button>
                     </div>
                     <div class="mt-2 ">
                       <img alt="Icon" class="card_icon"src="images/logo/mastercard.png"/>

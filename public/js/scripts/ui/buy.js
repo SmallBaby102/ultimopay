@@ -44,4 +44,15 @@ $(document).ready(function() {
       e.preventDefault();
     }
   })
+  $("#buy-with-card-btn").on("click", function (e) {
+      let amount = $("#spend_amount").val();
+      $.post(`/buy-with-card`, { amount }, (res) => {
+        console.log(res);
+        if(res === "failed"){
+          alert("failed");
+        } else {
+          window.location.href = res;
+        }
+      })    
+  })
 })

@@ -163,13 +163,14 @@
                   <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
                 </div>
               <div class="d-flex menu">
-                          <a href="{{url('deposit-page')}}" class="btn menu_btn " >Deposit</a>
-                          <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
-                          <a href="{{url('buy-page')}}" class="btn menu_btn " >Buy with card</a>
+                  <a href="{{url('deposit-page')}}" class="btn menu_btn " >Deposit</a>
+                  <a href="{{url('withdraw-page')}}" class="btn menu_btn active" >Withdraw</a>
+                  <a href="{{url('buy-page')}}" class="btn menu_btn " >Buy with card</a>
               </div>
             </div>
               <div class="withdraw_content">
-                  <div class="two_desc">
+                 @if($tfaStatus !== "enabled")
+                  <div class="two_desc" >
                     <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>
                     <div>
                         You have to turn on 2-Factor Authentication in order to make any withdrawals. 
@@ -178,21 +179,21 @@
                         </a> 
                     </div>
                   </div>
-                  
+                  @endif
                   <div class="form-group mt-2 ">
                     <div class="content_title">NETWORK</div>
-                    <select class="form-control network_select">
-                      <option>--Select Network--</option>
-                      <option>Ethereum(ERC20)</option>
-                      <option>Tron(TRC20)</option>
-                      <option>BNB Smart Chain(BEP20)</option>
+                    <select class="form-control network_select" id="network">
+                      <option value="none">--Select Network--</option>
+                      <option value="ETHEREUM_ERC20">Ethereum(ERC20)</option>
+                      <option value="TRON_TRC20">Tron(TRC20)</option>
+                      <option value="BNB_SMART_CHAIN_BEP20">BNB Smart Chain(BEP20)</option>
                     </select>
                   </div>
                   <div class="important_notice">
                       Please note that you do not mistake the network, if you withdraw via another network  your assets may be lost.
                   </div>
                   <div class="content_title mt-2">AMOUNT</div>
-                  <input type="text" class="amount_input" placeholder="0.00" />
+                  <input type="text" class="amount_input" id="amount" placeholder="0.00" />
                   <div class="mt-2">
                       <div class="d-flex w-75 notice_item">
                         <div class="left_side">Minimum amount</div>
@@ -208,12 +209,18 @@
                       </div>
                   </div>
                   <div class="content_title mt-2">TETHER USD ADDRESS</div>
-                  <input type="text" class="address_input " placeholder="ENTERE TETHER USD ADDRESS" />
+                  <input type="text" class="address_input " id="address" placeholder="ENTERE TETHER USD ADDRESS" />
                   <div class="content_title mt-2">2-FA code(from Google 2-Factor Authenticator app)</div>
-                  <input type="text" class="address_input " placeholder="ENTERE 2-FA code(for https://dashboard.ultimopay.io)" />
+                  <input type="text" class="address_input " id="code" placeholder="ENTERE 2-FA code(for https://dashboard.ultimopay.io)" />
+                  <div class="content_title mt-2">Password</div>
+                  <input type="text" class="address_input " id="password" placeholder="ENTERE Login Password" />
               
                   <div class="mt-2 text-center">
-                    <button class="btn content_btn">WITHDRAW</button>
+                    @if($tfaStatus !== "enabled")
+                      <button class="btn content_btn" id="withdraw" disabled >WITHDRAW</button>
+                    @else
+                      <button class="btn content_btn" id="withdraw" >WITHDRAW</button>
+                    @endif
                   </div>
               </div>
         @endif

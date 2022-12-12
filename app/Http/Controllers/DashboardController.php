@@ -7,11 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\DepositAddress;
 use GuzzleHttp\Exception\GuzzleException;
+use Session;
 require_once (app_path().'/includes/api/Payment.php');
 require_once (app_path().'/includes/api/Inquiry.php');
 require_once (app_path().'/includes/api/VoidRequest.php');
 require_once (app_path().'/includes/api/Settlement.php');
 require_once (app_path().'/includes/api/Refund.php');
+
+$CONFIGURATOR_USERNAME = "PlusqoAdmin2";
+$CONFIGURATOR_PASSWORD = "fY2ADeHDFkpVq%J18gaq";
 class DashboardController extends Controller
 {
     // Dashboard - Analytics
@@ -83,54 +87,105 @@ class DashboardController extends Controller
         }
     }
     public function depositPage(Request $request) {
-        $api_key = 'Bearer ' . env("API_KEY");
-        $response1 = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Authorization' => $api_key
-        ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-            'email_address' => $request->session()->get("email"),
-            'auth_token' =>$request->session()->get("auth_token"),
-            'currency' => "USDT"
-         ]);
-         if ($response1["result"] === "success") {
-            return view('/pages/deposit', [
-                'balance' => $response1['wallet'][0]['balance'],
-                 'email' => $request->session()->get("email"),
-                 'merchant' => $request->session()->get("merchant"),
-    
+        try
+        {
+            $api_key = 'Bearer ' . env("API_KEY");
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => $request->session()->get("email"),
+                'auth_token' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
             ]);
-         } else {
-            return view('/pages/deposit', [
-                 'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
-                 'email' =>  $request->session()->get("email"),
-                 'merchant' => $request->session()->get("merchant"),
-    
-            ]);
-         }
+            if ($response1["result"] === "success") {
+                return view('/pages/deposit', [
+                    'balance' => $response1['wallet'][0]['balance'],
+                    'email' => $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+        
+                ]);
+            } else {
+                return view('/pages/deposit', [
+                    'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+        
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return view('/pages/withdraw', [
+                'error' => "Network problem.",
+               'email' =>  $request->session()->get("email"),
+               'merchant' => $request->session()->get("merchant"),
+           ]);
+        }
     }
     public function withdrawPage(Request $request) {
         $api_key = 'Bearer ' . env("API_KEY");
-        $response1 = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Authorization' => $api_key
-        ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-            'email_address' => $request->session()->get("email"),
-            'auth_token' =>$request->session()->get("auth_token"),
-            'currency' => "USDT"
-         ]);
-         if ($response1["result"] === "success") {
+        try {
+            //code...
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => $request->session()->get("email"),
+                'auth_token' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
+             ]);
+             if ($response1["result"] === "success") {
+                $tfaStatus = $this->check2FA();
+                return view('/pages/withdraw', [
+                    'balance' => $response1['wallet'][0]['balance'],
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                    'tfaStatus' => $tfaStatus,
+                   ]);
+             } else {
+                return view('/pages/withdraw', [
+                     'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                ]);
+             }
+        } catch (\Throwable $th) {
+            //throw $th;
+            $tfaStatus = $this->check2FA();
+
             return view('/pages/withdraw', [
-                'balance' => $response1['wallet'][0]['balance'],
-                'email' =>  $request->session()->get("email"),
-                'merchant' => $request->session()->get("merchant"),
-               ]);
-         } else {
-            return view('/pages/withdraw', [
-                 'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
-                'email' =>  $request->session()->get("email"),
-                'merchant' => $request->session()->get("merchant"),
-            ]);
-         }
+                'error' => "Network problem.",
+               'email' =>  $request->session()->get("email"),
+               'merchant' => $request->session()->get("merchant"),
+           ]);
+        }
+      
+    }
+    public function withdraw(Request $request) {
+        $api_key = 'Bearer ' . env("API_KEY");
+        try {
+            //code...
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/wallet/",  [
+                'email_address' => $request->session()->get("email"),
+                'auth_token' =>$request->session()->get("auth_token"),
+                'amount' =>$request->session()->get("auth_token"),
+                'address' =>$request->session()->get("auth_token"),
+                'network' =>$request->session()->get("auth_token"),
+                'code' =>$request->session()->get("auth_token"),
+                'password' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
+             ]);
+            return $response1;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $result = [];
+            $result["result"] = "Network problem";
+            return $result;
+        }
+      
     }
     public function buyPage(Request $request) {
         $api_key = 'Bearer ' . env("API_KEY");
@@ -149,43 +204,186 @@ class DashboardController extends Controller
                 'merchant' => $request->session()->get("merchant"),
                ]);
          } else {
-            // return view('/pages/buy', [
-            //     'balance' => 22,
-            //     'email' =>  $request->session()->get("email"),
-            //     'merchant' => $request->session()->get("merchant"),
-            //    ]);
             return view('/pages/buy', [
                  'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
                 'email' =>  $request->session()->get("email"),
                 'merchant' => $request->session()->get("merchant"),
             ]);
          }
-        // try {
-        //         $payment = new \Payment();
-        //         $response = $payment->Execute();
-        //         echo "Response data : ".$response;
-        //         echo "\n";
+       
+    }
+    public function buyWithCard(Request $request) {
+         try {
+                $amount = $request->input("amount");
+                $payment = new \Payment();
+                $response = $payment->Execute($amount);
+                $request->session()->put('amount',$amount);
+                return $response["data"]["paymentPage"]["paymentPageURL"];
 
-        //     } catch (GuzzleException $e) {
-        //         echo '\n Message: ' . $e->getMessage();
-        //     } catch (Exception $e) {
-        //         echo '\n Message: ' . $e->getMessage();
-        //     }
+            } catch (GuzzleException $e) {
+                // echo '\n Message: ' . $e->getMessage();
+                return "failed";
+            } catch (Exception $e) {
+                // echo '\n Message: ' . $e->getMessage();
+                return "failed";
+            }
+    }
+    public function paymentConfirmation(Request $request) {
+        $pay_amount = $request->session()->get('amount');
+        $crypto_amount = $pay_amount * 0.95;
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post("https://authentication.cryptosrvc.com/api/configurator_authentication/configuratorToken/",  [
+            'exchange' => "CONFIGURATOR_PLUSQO",
+            'username' => $CONFIGURATOR_USERNAME,
+            'password' => $CONFIGURATOR_PASSWORD
+         ]);
+         $configurator_access_token = $response1["configurator_access_token"];
+         $response2 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization'=> `Bearer {$configurator_access_token}`,
+        ])->put("https://config.plusqo.shiftmarketsdev.com/api/users/{$userId}/accounts/{$id}/balancecorrection",  [
+              "userId"=> $user_id, 
+              "accountId"=> $id, 
+              "type"=> 5, 
+              "amount"=>  $crypto_amount, 
+              "comment"=>  `USDT BUY`, 
+              "currency"=>  "USDT"
+         ]);
+
+         if($response2->successful()){
+            $api_key = 'Bearer ' . env("API_KEY");
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => $request->session()->get("email"),
+                'auth_token' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
+             ]);
+             if ($response1["result"] === "success") {
+                return view('/pages/buy', [
+                    "paymentConfirm" => "You bought {$crypto_amount}USDT successfully!",
+                    'balance' => $response1['wallet'][0]['balance'],
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                   ]);
+             } else {
+                return view('/pages/buy', [
+                    'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                ]);
+             }
+         } else {
+            $api_key = 'Bearer ' . env("API_KEY");
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => $request->session()->get("email"),
+                'auth_token' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
+             ]);
+             if ($response1["result"] === "success") {
+                return view('/pages/buy', [
+                    "paymentConfirm" => "You failed in buying {$crypto_amount}USDT!",
+                    'balance' => $response1['wallet'][0]['balance'],
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                   ]);
+             } else {
+                return view('/pages/buy', [
+                     'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                ]);
+             }
+         }
+        
     }
     public function twoFa(Request $request) {
         $api_key = 'Bearer ' . env("API_KEY");
         $response1 = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Authorization' => $api_key
-        ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+        ])->post("https://api.ultimopay.io/v1/get2FASecretKey/",  [
             'email_address' => $request->session()->get("email"),
             'auth_token' =>$request->session()->get("auth_token"),
-            'currency' => "USDT"
          ]);
-         return view('/pages/2fa', [
-            'email' => $request->session()->get("email"),
-            'merchant' =>  $request->session()->get("merchant"),
-           ]);
+         if ($response1["result"] === "success") {
+            return view('/pages/2fa', [
+                'secret' => $response1['two_fa_secret_key'],
+                'email' => $request->session()->get("email"),
+                'merchant' =>  $request->session()->get("merchant"),
+
+               ]);
+         } else {
+            return view('/pages/2fa', [
+                 'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                'email' =>  $request->session()->get("email"),
+                'merchant' => $request->session()->get("merchant"),
+            ]);
+         }
+         
+    }
+    public function setTwoFa(Request $request) {
+        $api_key = 'Bearer ' . env("API_KEY");
+        $code = $request->input("code");
+        $password = $request->input("password");
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/set2FA/",  [
+            'email_address' => $request->session()->get("email"),
+            'auth_token' =>$request->session()->get("auth_token"),
+            'two_fa_code' =>$code,
+            'password' =>$password,
+            'type' =>1
+         ]);
+         if ($response1["result"] === "success") {
+            return "success";
+         } else {
+            return "failed";
+         }
+         
+    }
+    public function disableTwoFa(Request $request) {
+        $api_key = 'Bearer ' . env("API_KEY");
+        $code = $request->input("code");
+        $password = $request->input("password");
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/set2FA/",  [
+            'email_address' => $request->session()->get("email"),
+            'auth_token' =>$request->session()->get("auth_token"),
+            'two_fa_code' =>$code,
+            'password' =>$password,
+            'type' => 0
+         ]);
+         if ($response1["result"] === "success") {
+            return "success";
+         } else {
+            return "failed";
+         }
+         
+    }
+    public function check2FA() {
+        $api_key = 'Bearer ' . env("API_KEY");
+        $response1 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => $api_key
+        ])->post("https://api.ultimopay.io/v1/check2FA/",  [
+            'email_address' => Session::get("email"),
+            'auth_token' =>Session::get("auth_token"),
+         ]);
+         if ($response1["result"] === "success") {
+            return $response1["2FAStatus"]["status"] ;
+         } else {
+            return "failed";
+         }
+         
     }
     public function getDepositAddress(Request $request , $network, $email) {
         $api_key = 'Bearer ' . env("API_KEY");
@@ -201,7 +399,7 @@ class DashboardController extends Controller
          if ($response1["result"] === "success") {
             return $response1["depositResponse"]["address"];
          } else {
-            echo json_encode($response1["error"]["errorMessage"]);
+            return json_encode($response1["error"]["errorMessage"]);
 
          }
     }

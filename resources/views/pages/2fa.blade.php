@@ -152,12 +152,12 @@
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
                 <div class="row pt-2" style="width: 99%; border-radius: 30px; background: white; align-items: center; justify-content: center;">
                   <img alt="Address" id="deposit_address_qrcode" class=""
-                    src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=sss"
+                    src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{$secret}}"
                   />
                   <div class="col-sm-6 pt-1 text-left">
                       <div class="form-group">
                         <div class="d-flex">
-                          <input type="text" class="form-control" readonly id="copy-to-clipboard-input" value="">
+                          <input type="text" class="form-control" readonly id="copy-to-clipboard-input" value={{$secret}}>
                           <div class="text-center">
                             <button class="btn" id="btn-copy">Copy</button>
                           </div>
@@ -177,9 +177,9 @@
                         Enter the code from your Google Authenticator App and your login password
                     </label>
                     <div class="content_title mt-2">Code</div>
-                    <input type="text" class="address_input " placeholder="Enter the code" />
+                    <input type="text" class="address_input " id="code" placeholder="Enter the code" />
                     <div class="content_title mt-2">Password</div>
-                    <input type="text" class="address_input " placeholder="Enter your login password" />
+                    <input type="text" class="address_input " id="password" placeholder="Enter your login password" />
                 </div>
           </div>
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
@@ -212,6 +212,6 @@
             let base_url = '<?php echo url(""); ?>'
         </script>
         {{-- Page js files --}}
-        <script src="{{ asset('js/scripts/ui/deposit.js') }}"></script>
+        <script src="{{ asset('js/scripts/ui/2fa.js') }}"></script>
         <script src="{{ asset('js/scripts/extensions/copy-to-clipboard.js') }}"></script>
 @endsection
