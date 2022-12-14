@@ -82,7 +82,7 @@ abstract class ActionRequest
             new JWSVerifier(
                  new AlgorithmManager(
                      [
-                        new PS256()
+                        // new PS256()
                     ]
                 )
             ),
