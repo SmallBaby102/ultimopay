@@ -15,9 +15,15 @@ $(document).ready(function() {
 
   $("#amount").on('keyup', function(e) {
     if ($("#amount").val() === "") {
+<<<<<<< HEAD
     $("#withdraw_fee").html("5&#8202;USDT + 5% of withdraw amount");
     } else {
     let withdraw_fee = 5 + parseFloat($("#amount").val()) * 5 / 100;
+=======
+      $("#withdraw_fee").val("");
+    } else {
+      let withdraw_fee = 5 + parseFloat($("#amount").val()) * 5 / 100;
+>>>>>>> 8c160274f5950eb7c04dfadf6692324bb3b7798a
       $("#withdraw_fee").html(Math.ceil(withdraw_fee * 100) / 100 + "&#8202;USDT");
     }
   })

@@ -13,9 +13,10 @@ require_once (app_path().'/includes/api/Inquiry.php');
 require_once (app_path().'/includes/api/VoidRequest.php');
 require_once (app_path().'/includes/api/Settlement.php');
 require_once (app_path().'/includes/api/Refund.php');
-require_once (app_path().'/includes'.'/PHPGangsta/GoogleAuthenticator.php');
+require_once (app_path().'/includes/PHPGangsta/GoogleAuthenticator.php');
 $CONFIGURATOR_USERNAME = "PlusqoAdmin2";
 $CONFIGURATOR_PASSWORD = "fY2ADeHDFkpVq%J18gaq";
+
 class DashboardController extends Controller
 {
     // Dashboard - Analytics
@@ -213,11 +214,6 @@ class DashboardController extends Controller
       
     }
     public function buyPage(Request $request) {
-        // return view('/pages/buy', [
-        //     'balance' => 1234,
-        //     'email' =>  $request->session()->get("email"),
-        //     'merchant' => $request->session()->get("merchant"),
-        //    ]);
         $api_key = 'Bearer ' . env("API_KEY");
         $response1 = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -240,6 +236,7 @@ class DashboardController extends Controller
                 'merchant' => $request->session()->get("merchant"),
             ]);
          }
+       
     }
     public function buyWithCard(Request $request) {
          try {
