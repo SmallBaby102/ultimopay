@@ -34,7 +34,7 @@ class Payment extends ActionRequest
             ],
             "officeId" => "000002105010090",
             "orderNo" => $orderNo,
-            "productDescription" => "desc for " . $orderNo,
+            "productDescription" => "For buying USDT",
             "paymentType" => "CC",
             "paymentCategory" => "ECOM",
             "storeCardDetails" => [

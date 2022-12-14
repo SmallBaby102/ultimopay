@@ -214,7 +214,7 @@
                     <div class="content_title mt-2">2-FA code(from Google Authenticator app)</div>
                     <input type="text" class="address_input " id="code" placeholder="ENTERE 2-FA code(for ULTIMOPAY.IO)" />
                     <div class="content_title mt-2">Password</div>
-                    <input type="text" class="address_input " id="password" placeholder="ENTER Login Password" />
+                    <input type="password" class="address_input " id="password" placeholder="ENTER Login Password" />
                 
                     <div class="mt-2 text-center">
                         <button class="btn content_btn" id="withdraw" >WITHDRAW</button>

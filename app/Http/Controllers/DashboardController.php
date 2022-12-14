@@ -335,6 +335,14 @@ class DashboardController extends Controller
         
     }
     public function twoFa(Request $request) {
+        if($this->check2FA()) {
+            return view('/pages/2fa', [
+                'status' => true,
+                'email' => $request->session()->get("email"),
+                'merchant' =>  $request->session()->get("merchant"),
+
+               ]);
+        }
         $api_key = 'Bearer ' . env("API_KEY");
         $response1 = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -375,7 +383,7 @@ class DashboardController extends Controller
             'auth_token' =>$request->session()->get("auth_token"),
             'two_fa_code' =>$code,
             'password' =>$password,
-            'type' =>1
+            'type' => 1
          ]);
          if ($response1["result"] === "success") {
             return "success";

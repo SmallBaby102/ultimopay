@@ -29,12 +29,14 @@ $(document).ready(function() {
     }
   })
   $("#withdraw").on("click", function(e) {
+    $("#withdraw").text("Loading");
       let network = $("#network").val();
       let amount = $("#amount").val();
       let address = $("#address").val();
       let code = $("#code").val();
       let password = $("#password").val();
       $.post(`/withdraw`, { code, password, network, address, amount }, (res) => {
+      $("#withdraw").text("Withdraw");
         console.log(res);
         alert(res.result);
       })   

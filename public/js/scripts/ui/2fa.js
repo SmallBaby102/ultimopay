@@ -12,25 +12,27 @@
 $(document).ready(function() {
   "use strict"
   $("#btn-enable").click((e) => {
-
       let code = $("#code").val();
       let password = $("#password").val();
       if($("#btn-enable").text() === "Enable 2-FA" ){
-          $.post(`/disable-2Fa`, { code, password }, (res) => {
+          $("#btn-enable").text("Loading");
+          $.post(`/set-2Fa`, { code, password }, (res) => {
             console.log(res);
             if(res === "success"){
               $("#btn-enable").text("Disable 2-FA"); 
             } else {
-              alert("failed");
+                $("#btn-enable").text("Enable 2-FA");
+                alert("failed");
             }
           })
       } else {
-         
-          $.post(`/set-2Fa`, { code, password }, (res) => {
+          $("#btn-enable").text("Loading");
+          $.post(`/disable-2Fa`, { code, password }, (res) => {
             console.log(res);
             if(res === "success"){
               $("#btn-enable").text("Enable 2-FA"); 
             } else {
+              $("#btn-enable").text("Disable 2-FA"); 
               alert("failed");
             }
           })    

@@ -108,6 +108,9 @@
    .form-control:focus {
     border: 1px solid rgb(250, 200, 10);
    }
+   #btn-copy {
+    padding: 10px;
+   }
    #btn-copy, #btn-enable {
     background: rgb(250, 200, 10);
     color: black;
@@ -149,28 +152,30 @@
             <br/>
             For iOS: <a target="_blank" href="https://apps.apple.com/us/app/google-authenticator/id388497605">click here to install</a>
         </div>
-          <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
-                <div class="row pt-2" style="width: 99%; border-radius: 30px; background: white; align-items: center; justify-content: center;">
-                  <img alt="Address" id="deposit_address_qrcode" class=""
-                    src="<?php echo $qrCodeUrl;?>"
-                  />
-                  <div class="col-sm-6 pt-1 text-left">
-                      <div class="form-group">
-                        <div class="d-flex">
-                          <input type="text" class="form-control" readonly id="copy-to-clipboard-input" value={{$secret}}>
-                          <div class="text-center">
-                            <button class="btn" id="btn-copy">Copy</button>
+          @if(!isset($status))
+            <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
+                  <div class="row pt-2" style="width: 99%; border-radius: 30px; background: white; align-items: center; justify-content: center;">
+                    <img alt="Address" id="deposit_address_qrcode" class=""
+                      src="<?php echo $qrCodeUrl;?>"
+                    />
+                    <div class="col-sm-6 pt-1 text-left">
+                        <div class="form-group">
+                          <div class="d-flex">
+                            <input type="text" class="form-control" readonly id="copy-to-clipboard-input" value={{$secret}}>
+                            <div class="text-center">
+                              <button class="btn" id="btn-copy">Copy</button>
+                            </div>
+          
                           </div>
-        
+                          <label class="d-flex mt-2">
+                              Use your Google Authenticator App to scan the QR code or enter the authenticator key shown
+                          </label>
                         </div>
-                        <label class="d-flex mt-2">
-                            Use your Google Authenticator App to scan the QR code or enter the authenticator key shown
-                        </label>
-                      </div>
+                    </div>
+                                  
                   </div>
-                                 
-                </div>
-          </div>
+            </div>
+          @endif
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
                 <div class="row p-2" style="width: 99%; border-radius: 30px; background: white; align-items: center; ">
                     <label class="d-flex ">
@@ -179,7 +184,7 @@
                     <div class="content_title mt-2">Code</div>
                     <input type="text" class="address_input " id="code" placeholder="Enter the code" />
                     <div class="content_title mt-2">Password</div>
-                    <input type="text" class="address_input " id="password" placeholder="Enter your login password" />
+                    <input type="password" class="address_input " id="password" placeholder="Enter your login password" />
                 </div>
           </div>
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
@@ -191,8 +196,12 @@
                 </div>
           </div>
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%;" >
-              <button class="btn" id="btn-enable">Enable 2-FA</button>
-          </div>
+              @if(!isset($status))
+                <button class="btn" id="btn-enable">Enable 2-FA</button>
+              @else
+                <button class="btn" id="btn-enable">Disable 2-FA</button>
+              @endif
+           </div>
   </div>
   {{-- Data list view end --}}
 @endsection
