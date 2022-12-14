@@ -47,6 +47,10 @@ $(document).ready(function() {
   $("#buy-with-card-btn").on("click", function (e) {
       let amount = $("#spend_amount").val();
       let currency = "USDT";
+      if (amount === "" || amount === "0") {
+        alert("Input correct amount!");
+        return;
+      }
       $("#buy-with-card-btn").text("Loading");
       $.post(`/buy-with-card`, { amount, currency }, (res) => {
         $("#buy-with-card-btn").text("Buy with card");
