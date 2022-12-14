@@ -191,17 +191,22 @@ class DashboardController extends Controller
         $api_key = 'Bearer ' . env("API_KEY");
         try {
             //code...
+            $amount = $request->input("amount");
+            $address = $request->input("address");
+            $network = $request->input("network");
+            $code = $request->input("code");
+            $password = $request->input("password");
             $response1 = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => $api_key
-            ])->post("https://api.ultimopay.io/v1/wallet/",  [
+            ])->post("https://api.ultimopay.io/v1/withdraw/",  [
                 'email_address' => $request->session()->get("email"),
                 'auth_token' =>$request->session()->get("auth_token"),
-                'amount' =>$request->session()->get("auth_token"),
-                'address' =>$request->session()->get("auth_token"),
-                'network' =>$request->session()->get("auth_token"),
-                'code' =>$request->session()->get("auth_token"),
-                'password' =>$request->session()->get("auth_token"),
+                'amount' =>$amount,
+                'address' =>$address,
+                'network' =>$network,
+                'two_fa_code' =>$code,
+                'password' =>$password,
                 'currency' => "USDT"
              ]);
             return $response1;

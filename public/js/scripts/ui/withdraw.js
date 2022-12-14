@@ -11,6 +11,9 @@
 $(document).ready(function() {
   "use strict"
   let available_amount = (balance - 5) / 1.05;
+  if (available_amount < 0) {
+    available_amount = 0;
+  }
   $("#available_amount").html(Math.floor(available_amount * 100) / 100 + "&#8202;USDT");
 
   $("#amount").on('keyup', function(e) {
@@ -29,16 +32,26 @@ $(document).ready(function() {
     }
   })
   $("#withdraw").on("click", function(e) {
-    $("#withdraw").text("Loading");
       let network = $("#network").val();
       let amount = $("#amount").val();
       let address = $("#address").val();
       let code = $("#code").val();
       let password = $("#password").val();
+      if (network === "none") {
+        alert("You must select a network!");
+        return;
+      }
+      if (amount < 100) {
+          alert("Amount must be over 100");
+          return;
+      }
+
+      $("#withdraw").text("Loading");
       $.post(`/withdraw`, { code, password, network, address, amount }, (res) => {
-      $("#withdraw").text("Withdraw");
+        $("#withdraw").text("Withdraw");
         console.log(res);
-        alert(res.result);
+        let response = JSON.parse(res);
+        alert(response.result);
       })   
   })
 })
