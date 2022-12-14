@@ -2,7 +2,7 @@
 
 namespace App\includes;
 
-use Exception;
+// use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -65,7 +65,7 @@ abstract class ActionRequest
             'handler' => $handler
         ]);
 
-        $this->jwsCompactSerializer = new JWSCompactSerializer();
+        $this->jwsCompactSerializer = new \Jose\Component\Signature\Serializer\CompactSerializer;
         $this->jwsBuilder = new JWSBuilder(
              new AlgorithmManager(
                  [
@@ -76,7 +76,7 @@ abstract class ActionRequest
         $this->jwsLoader = new JWSLoader(
              new JWSSerializerManager(
                  [
-                    new JWSCompactSerializer()
+                    new \Jose\Component\Signature\Serializer\CompactSerializer
                 ]
             ),
             new JWSVerifier(

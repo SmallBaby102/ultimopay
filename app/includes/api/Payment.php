@@ -13,15 +13,23 @@ class Payment extends ActionRequest
     /**
      * @throws GuzzleException
      */
-    public function Execute($amount): string
+    public function Execute($amount=0): string
     {
+        $amount_text = $amount;
+         $len = strlen((string)$amount);
+         for ($i=0; $i < (4 - $len); $i++) { 
+            # code...
+            $amount_text = "0".$amount_text;
+
+         }
         $now = Carbon::now();
         $orderNo = $now->getPreciseTimestamp(3);
-
+        $app_url = env('APP_URL');
         $request = [
             "apiRequest" => [
                 "requestMessageID" => Uuid::generate()->string,
-                "requestDateTime" => $now->utc()->format('Y-m-d\TH:i:s.v\Z'),
+                "requestMessageID" => "05ac1eb1-d931-495e-a656-3c32c0048e19",
+                "requestDateTime" => "2022-12-07T09:13:34.001+0000",
                 "language" => "en-US"
             ],
             "officeId" => "000002105010090",
@@ -41,32 +49,18 @@ class Payment extends ActionRequest
             "mcpFlag" => "N",
             "request3dsFlag" => "N",
             "transactionAmount" => [
-                "amountText" => "000000{$amount}00",
+                "amountText" => "000000{$amount_text}00",
                 "currencyCode" => "USD",
                 "decimalPlaces" => 2,
                 "amount" => $amount
             ],
             "notificationURLs" => [
-                "confirmationURL" => "{$env('APP_URL')}/payment-confirmation",
-                "failedURL" => "{$env('APP_URL')}/payment-failed",
-                "cancellationURL" => "{$env('APP_URL')}/payment-cancellation",
-                "backendURL" => "{$env('APP_URL')}/payment-backend"
+                "confirmationURL" => "{$app_url}/payment-confirmation",
+                "failedURL" => "{$app_url}/payment-failed",
+                "cancellationURL" => "{$app_url}/payment-cancellation",
+                "backendURL" => "{$app_url}/payment-backend"
             ],
-            "purchaseItems" => [
-                [
-                    "purchaseItemType" => "ticket",
-                    "referenceNo" => "2322460376026",
-                    "purchaseItemDescription" => "Bundled insurance",
-                    "purchaseItemPrice" => [
-                        "amountText" => "000000100000",
-                        "currencyCode" => "THB",
-                        "decimalPlaces" => 2,
-                        "amount" => 1000
-                    ],
-                    "subMerchantID" => "string",
-                    "passengerSeqNo" => 1
-                ]
-            ],
+
             "customFieldList" => [
                 [
                     "fieldName" => "TestField",
@@ -76,7 +70,6 @@ class Payment extends ActionRequest
         ];
 
         $stringRequest = json_encode($request);
-
         //third-party http client https://github.com/guzzle/guzzle
         $response = $this->client->post('api/1.0/Payment/prePaymentUI', [
             'headers' => [

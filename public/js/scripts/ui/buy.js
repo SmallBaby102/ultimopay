@@ -46,23 +46,18 @@ $(document).ready(function() {
   })
   $("#buy-with-card-btn").on("click", function (e) {
       let amount = $("#spend_amount").val();
-<<<<<<< HEAD
       let currency = "USDT";
+      $("#buy-with-card-btn").text("Loading");
       $.post(`/buy-with-card`, { amount, currency }, (res) => {
+        $("#buy-with-card-btn").text("Buy with card");
         if(res === "failed"){
           alert("failed");
         } else {
           console.log(res);
-          // window.location.href = res;
-=======
-      $.post(`/buy-with-card`, { amount }, (res) => {
-        console.log(res);
-        if(res === "failed"){
-          alert("failed");
-        } else {
-          window.location.href = res;
->>>>>>> 8c160274f5950eb7c04dfadf6692324bb3b7798a
+          let result = JSON.parse(res);
+          let url = (result.data.paymentPage.paymentPageURL);
+          window.location.href = url;
         }
-      })    
+      })
   })
 })

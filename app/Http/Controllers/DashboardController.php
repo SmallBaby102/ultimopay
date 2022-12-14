@@ -245,13 +245,13 @@ class DashboardController extends Controller
                 $payment = new \Payment();
                 $response = $payment->Execute($amount);
                 $request->session()->put('amount',$amount);
-                return $response["data"]["paymentPage"]["paymentPageURL"];
+                return $response;
 
             } catch (GuzzleException $e) {
-                // echo '\n Message: ' . $e->getMessage();
+                echo '\n Message: ' . $e->getMessage();
                 return "failed";
             } catch (Exception $e) {
-                // echo '\n Message: ' . $e->getMessage();
+                echo '\n Message: ' . $e->getMessage();
                 return "failed";
             }
     }
@@ -344,7 +344,7 @@ class DashboardController extends Controller
             'auth_token' =>$request->session()->get("auth_token"),
          ]);
          if ($response1["result"] === "success") {
-            $ga = new PHPGangsta_GoogleAuthenticator();
+            $ga = new \PHPGangsta_GoogleAuthenticator();
             $fixedcode = $response1['two_fa_secret_key'];
             $qrCodeUrl = $ga->getQRCodeGoogleUrl("2FA for Ultimopay", $fixedcode, 'ULTIMOPAY.IO');
             return view('/pages/2fa', [
