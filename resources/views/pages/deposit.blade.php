@@ -165,9 +165,9 @@
               <div class="content_title">NETWORK</div>
               <select class="form-control network_select">
                 <option value="none">--Select Network--</option>
-                <option value="ETHEREUM_ERC20">Ethereum(ERC20)</option>
-                <option value="TRON_TRC20">Tron(TRC20)</option>
-                <option value="BNB_SMART_CHAIN_BEP20">BNB Smart Chain(BEP20)</option>
+                <option value="ETHEREUM_ERC20">Ethereum&#8202;(ERC20)</option>
+                <option value="TRON_TRC20">Tron&#8202;(TRC20)</option>
+                <option value="BNB_SMART_CHAIN_BEP20">BNB Smart Chain&#8202;(BEP20)</option>
               </select>
             </div>
           </div>

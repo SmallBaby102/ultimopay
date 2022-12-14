@@ -13,7 +13,83 @@ class Payment extends ActionRequest
     /**
      * @throws GuzzleException
      */
-    public function Execute(): string
+    public function Execute($amount): string
+    {
+        $now = Carbon::now();
+        $orderNo = $now->getPreciseTimestamp(3);
+
+        $request = [
+            "apiRequest" => [
+                "requestMessageID" => Uuid::generate()->string,
+                "requestDateTime" => $now->utc()->format('Y-m-d\TH:i:s.v\Z'),
+                "language" => "en-US"
+            ],
+            "officeId" => "000002105010090",
+            "orderNo" => $orderNo,
+            "productDescription" => "desc for " . $orderNo,
+            "paymentType" => "CC",
+            "paymentCategory" => "ECOM",
+            "storeCardDetails" => [
+                "storeCardFlag" => "N",
+                "storedCardUniqueID" => Uuid::generate()->string
+            ],
+            "installmentPaymentDetails" => [
+                "ippFlag" => "N",
+                "installmentPeriod" => 0,
+                "interestType" => null
+            ],
+            "mcpFlag" => "N",
+            "request3dsFlag" => "N",
+            "transactionAmount" => [
+                "amountText" => "000000{$amount}00",
+                "currencyCode" => "USD",
+                "decimalPlaces" => 2,
+                "amount" => $amount
+            ],
+            "notificationURLs" => [
+                "confirmationURL" => "{$env('APP_URL')}/payment-confirmation",
+                "failedURL" => "{$env('APP_URL')}/payment-failed",
+                "cancellationURL" => "{$env('APP_URL')}/payment-cancellation",
+                "backendURL" => "{$env('APP_URL')}/payment-backend"
+            ],
+            "purchaseItems" => [
+                [
+                    "purchaseItemType" => "ticket",
+                    "referenceNo" => "2322460376026",
+                    "purchaseItemDescription" => "Bundled insurance",
+                    "purchaseItemPrice" => [
+                        "amountText" => "000000100000",
+                        "currencyCode" => "THB",
+                        "decimalPlaces" => 2,
+                        "amount" => 1000
+                    ],
+                    "subMerchantID" => "string",
+                    "passengerSeqNo" => 1
+                ]
+            ],
+            "customFieldList" => [
+                [
+                    "fieldName" => "TestField",
+                    "fieldValue" => "This is test"
+                ]
+            ]
+        ];
+
+        $stringRequest = json_encode($request);
+
+        //third-party http client https://github.com/guzzle/guzzle
+        $response = $this->client->post('api/1.0/Payment/prePaymentUI', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'apiKey' => SecurityData::$AccessToken,
+                'Content-Type' => 'application/json; charset=utf-8'
+            ],
+            'body' => $stringRequest
+        ]);
+
+        return $response->getBody()->getContents();
+    }
+    public function ExecuteNonUI($amount): string
     {
         $now = Carbon::now();
         $orderNo = $now->getPreciseTimestamp(3);
@@ -47,16 +123,16 @@ class Payment extends ActionRequest
             "mcpFlag" => "N",
             "request3dsFlag" => "N",
             "transactionAmount" => [
-                "amountText" => "000000100000",
+                "amountText" => "000000{$amount}00",
                 "currencyCode" => "USD",
                 "decimalPlaces" => 2,
-                "amount" => 1000
+                "amount" => $amount
             ],
             "notificationURLs" => [
-                "confirmationURL" => "http://example-confirmation.com",
-                "failedURL" => "http://example-failed.com",
-                "cancellationURL" => "http://example-cancellation.com",
-                "backendURL" => "http://example-backend.com"
+                "confirmationURL" => "{$env('APP_URL')}/payment-confirmation",
+                "failedURL" => "http://localhost:8000/payment-failed",
+                "cancellationURL" => "http://localhost:8000/payment-cancellation",
+                "backendURL" => "http://http://localhost:8000/payment-backend"
             ],
             "deviceDetails" => [
                 "browserIp" => "1.0.0.1",
@@ -90,7 +166,7 @@ class Payment extends ActionRequest
         $stringRequest = json_encode($request);
 
         //third-party http client https://github.com/guzzle/guzzle
-        $response = $this->client->post('api/1.0/Payment/NonUi', [
+        $response = $this->client->post('api/1.0/Payment/nonUI', [
             'headers' => [
                 'Accept' => 'application/json',
                 'apiKey' => SecurityData::$AccessToken,

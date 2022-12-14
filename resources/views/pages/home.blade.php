@@ -31,7 +31,6 @@
    .menu {
     align-items: center;
     justify-content: end;
-    margin-top: 10px;
    }
    .content {
     margin-left: 0 !important;
@@ -43,6 +42,8 @@
     font-weight: 700;
     margin-left: 10px;
     border-radius: 25px;
+    margin-top: 5px;
+
    }
    .menu_btn:hover {
     background-color: black;
@@ -107,10 +108,10 @@
                 </div>
                 <div class="text-right"> 
                 <div id="balance" class="coin_balance text-right"> {{$balance}} </div>
-                <div class="d-flex menu ">
+                <div class="d-flex menu " style="flex-flow: wrap">
                         <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
                         <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
-                        <a href="{{url('buy-page')}}" class="btn menu_btn" >Buy with card</a>
+                        <a href="{{url('buy-page')}}" class="btn menu_btn" style="width: max-content" >Buy with card</a>
                 </div>
                 </div>
         

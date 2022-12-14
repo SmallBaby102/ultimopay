@@ -44,4 +44,16 @@ $(document).ready(function() {
       e.preventDefault();
     }
   })
+  $("#buy-with-card-btn").on("click", function (e) {
+      let amount = $("#spend_amount").val();
+      let currency = "USDT";
+      $.post(`/buy-with-card`, { amount, currency }, (res) => {
+        if(res === "failed"){
+          alert("failed");
+        } else {
+          console.log(res);
+          // window.location.href = res;
+        }
+      })    
+  })
 })

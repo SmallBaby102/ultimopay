@@ -19,7 +19,11 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-    "/upload/csvFile"
+        "/upload/csvFile",
+        "/set-2Fa",
+        "/disable-2Fa",
+        "withdraw",
+        "buy-with-card"
         //
     ];
 }

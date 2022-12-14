@@ -19,6 +19,11 @@ Route::get('/deposit-page', 'DashboardController@depositPage');
 Route::get('/withdraw-page', 'DashboardController@withdrawPage');
 Route::get('/deposit_address/{network}/{id}', 'DashboardController@getDepositAddress');
 Route::get('/2fa', 'DashboardController@twoFa');
+Route::get('/payment-confirmation', 'DashboardController@paymentConfirmation');
+Route::post('/set-2Fa', 'DashboardController@setTwoFa');
+Route::post('/disable-2Fa', 'DashboardController@disableTwoFa');
+Route::post('/withdraw', 'DashboardController@withdraw');
+Route::post('/buy-with-card', 'DashboardController@buyWithCard');
 
 
 
