@@ -69,8 +69,8 @@ class Payment extends ActionRequest
                 ]
             ]
         ];
-        return $request;
         $stringRequest = json_encode($request);
+        return $stringRequest;
         //third-party http client https://github.com/guzzle/guzzle
         $response = $this->client->post('api/1.0/Payment/prePaymentUI', [
             'headers' => [
