@@ -292,8 +292,6 @@ class DashboardController extends Controller
             "comment"=>  `USDT BUY`, 
             "currency"=>  "USDT"
         ]);
-        return $response2;
-
          if($response2->successful()){
             $api_key = 'Bearer ' . env("API_KEY");
             $response1 = Http::withHeaders([
