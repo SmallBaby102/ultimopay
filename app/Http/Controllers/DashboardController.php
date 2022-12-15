@@ -280,25 +280,20 @@ class DashboardController extends Controller
             'username' => $CONFIGURATOR_USERNAME,
             'password' => $CONFIGURATOR_PASSWORD
          ]);
-         $configurator_access_token = $response1["configurator_access_token"];
-         $response2="";
-        try {
-            $response2 = Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'Authorization'=> 'Bearer '.$configurator_access_token,
-            ])->post("https://config.plusqo.shiftmarketsdev.com/api/users/{$userId}/accounts/{$account_id}/balancecorrection",  [
-                "userId"=> $userId, 
-                "accountId"=> $account_id, 
-                "type"=> 5, 
-                "amount"=>  $crypto_amount, 
-                "comment"=>  `USDT BUY`, 
-                "currency"=>  "USDT"
-            ]);
-        }
-        catch(Exception $e){
-            return $e->getMessage();
-        }
+        $configurator_access_token = $response1["configurator_access_token"];
+        $response2 = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization'=> 'Bearer '.$configurator_access_token,
+        ])->post("https://config.plusqo.shiftmarketsdev.com/api/users/{$userId}/accounts/{$account_id}/balancecorrection",  [
+            "userId"=> $userId, 
+            "accountId"=> $account_id, 
+            "type"=> 5, 
+            "amount"=>  $crypto_amount, 
+            "comment"=>  `USDT BUY`, 
+            "currency"=>  "USDT"
+        ]);
         return $response2;
+        
          if($response2->successful()){
             $api_key = 'Bearer ' . env("API_KEY");
             $response1 = Http::withHeaders([
