@@ -14,8 +14,7 @@ require_once (app_path().'/includes/api/VoidRequest.php');
 require_once (app_path().'/includes/api/Settlement.php');
 require_once (app_path().'/includes/api/Refund.php');
 require_once (app_path().'/includes/PHPGangsta/GoogleAuthenticator.php');
-$CONFIGURATOR_USERNAME = "PlusqoAdmin2";
-$CONFIGURATOR_PASSWORD = "fY2ADeHDFkpVq%J18gaq";
+
 
 class DashboardController extends Controller
 {
@@ -261,13 +260,19 @@ class DashboardController extends Controller
             }
     }
     public function paymentConfirmation(Request $request) {
+        $CONFIGURATOR_USERNAME = "PlusqoAdmin2";
+        $CONFIGURATOR_PASSWORD = "fY2ADeHDFkpVq%J18gaq";
         $pay_amount = $request->session()->get('amount');
+        $crypto_amount = $pay_amount * 0.95;
         $userId = $request->session()->get('user_id');
         $accounts = $request->session()->get('accounts');
         $currency = $request->session()->get('currency');
-        $account = array_filter( $accounts, function( $v ) { return ( $v["currency"] === $currency ); } );
-        $account_id = $account[0]["account_id"];
-        $crypto_amount = $pay_amount * 0.95;
+        foreach ($accounts as $item) {
+            if($item["currency"] === $currency){
+                $account = $item;
+            }
+        }
+        $account_id = $account["account_id"];
         $response1 = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post("https://authentication.cryptosrvc.com/api/configurator_authentication/configuratorToken/",  [
@@ -276,18 +281,23 @@ class DashboardController extends Controller
             'password' => $CONFIGURATOR_PASSWORD
          ]);
          $configurator_access_token = $response1["configurator_access_token"];
-         $response2 = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Authorization'=> `Bearer {$configurator_access_token}`,
-        ])->put("https://config.plusqo.shiftmarketsdev.com/api/users/{$userId}/accounts/{$account_id}/balancecorrection",  [
-              "userId"=> $user_id, 
-              "accountId"=> $account_id, 
-              "type"=> 5, 
-              "amount"=>  $crypto_amount, 
-              "comment"=>  `USDT BUY`, 
-              "currency"=>  "USDT"
-         ]);
-
+         $response2="";
+            try {
+                $response2 = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization'=> 'Bearer '.$configurator_access_token,
+                ])->post("https://config.plusqo.shiftmarketsdev.com/api/users/{$userId}/accounts/{$account_id}/balancecorrection",  [
+                    "userId"=> $userId, 
+                    "accountId"=> $account_id, 
+                    "type"=> 5, 
+                    "amount"=>  $crypto_amount, 
+                    "comment"=>  `USDT BUY`, 
+                    "currency"=>  "USDT"
+                ]);
+            }
+            catch(Exception $e){
+                return $e->getMessage();
+            }
          if($response2->successful()){
             $api_key = 'Bearer ' . env("API_KEY");
             $response1 = Http::withHeaders([
@@ -339,13 +349,92 @@ class DashboardController extends Controller
          }
         
     }
+    public function paymentCancellation(Request $request) {
+        $pay_amount = $request->session()->get('amount');
+        $crypto_amount = $pay_amount * 0.95;
+            $api_key = 'Bearer ' . env("API_KEY");
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => $request->session()->get("email"),
+                'auth_token' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
+             ]);
+             if ($response1["result"] === "success") {
+                return view('/pages/buy', [
+                    'balance' => $response1['wallet'][0]['balance'],
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                   ]);
+             } else {
+                return view('/pages/buy', [
+                     'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                ]);
+             }
+    }
+    public function paymentFailed(Request $request) {
+
+        $pay_amount = $request->session()->get('amount');
+        $crypto_amount = $pay_amount * 0.95;
+            $api_key = 'Bearer ' . env("API_KEY");
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => $request->session()->get("email"),
+                'auth_token' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
+             ]);
+             if ($response1["result"] === "success") {
+                return view('/pages/buy', [
+                    "paymentConfirm" => "You failed in buying {$crypto_amount}USDT!",
+                    'balance' => $response1['wallet'][0]['balance'],
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                   ]);
+             } else {
+                return view('/pages/buy', [
+                     'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                ]);
+             }
+    }
+    public function paymentBackend(Request $request) {
+        
+            $api_key = 'Bearer ' . env("API_KEY");
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => $request->session()->get("email"),
+                'auth_token' =>$request->session()->get("auth_token"),
+                'currency' => "USDT"
+             ]);
+             if ($response1["result"] === "success") {
+                return view('/pages/buy', [
+                    "paymentConfirm" => "You entered paymentBackend!",
+                    'balance' => $response1['wallet'][0]['balance'],
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                   ]);
+             } else {
+                return view('/pages/buy', [
+                     'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                    'email' =>  $request->session()->get("email"),
+                    'merchant' => $request->session()->get("merchant"),
+                ]);
+             }
+    }
     public function twoFa(Request $request) {
-        if($this->check2FA()) {
+        if($this->check2FA() === "enabled") {
             return view('/pages/2fa', [
                 'status' => true,
                 'email' => $request->session()->get("email"),
                 'merchant' =>  $request->session()->get("merchant"),
-
                ]);
         }
         $api_key = 'Bearer ' . env("API_KEY");
@@ -359,7 +448,7 @@ class DashboardController extends Controller
          if ($response1["result"] === "success") {
             $ga = new \PHPGangsta_GoogleAuthenticator();
             $fixedcode = $response1['two_fa_secret_key'];
-            $qrCodeUrl = $ga->getQRCodeGoogleUrl("2FA for Ultimopay", $fixedcode, 'ULTIMOPAY.IO');
+            $qrCodeUrl = $ga->getQRCodeGoogleUrl($request->session()->get("email"), $fixedcode, 'ULTIMOPAY.IO');
             return view('/pages/2fa', [
                 'qrCodeUrl' => $qrCodeUrl,
                 'secret' => $fixedcode,

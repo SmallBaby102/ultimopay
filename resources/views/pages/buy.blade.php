@@ -156,7 +156,7 @@
         margin: 20px;
    }
    .buy_success_desc {
-      font-size: 25px;
+      font-size: 22px;
       text-align: center;
       display: block;
       margin-bottom: 20px;
@@ -190,7 +190,7 @@
             </div>
               <div class="withdraw_content">
                   @if(isset($paymentConfirm))
-                  <div class="buy_success_desc success" >
+                  <div class="buy_success_desc" >
                         {{ $paymentConfirm }}
                   </div>  
                   @endif

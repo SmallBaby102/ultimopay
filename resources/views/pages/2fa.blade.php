@@ -152,7 +152,7 @@
             <br/>
             For iOS: <a target="_blank" href="https://apps.apple.com/us/app/google-authenticator/id388497605">click here to install</a>
         </div>
-          @if(!isset($status))
+          @if(!isset($status) || !$status)
             <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%; background-image: radial-gradient(circle at center, rgb(228, 166, 51),#ffffff);" >
                   <div class="row pt-2" style="width: 99%; border-radius: 30px; background: white; align-items: center; justify-content: center;">
                     <img alt="Address" id="deposit_address_qrcode" class=""
@@ -196,7 +196,7 @@
                 </div>
           </div>
           <div class="justify-content-center mt-2 d-flex p-1" style="margin: auto; width: 70%;" >
-              @if(!isset($status))
+              @if(!isset($status) || !$status)
                 <button class="btn" id="btn-enable">Enable 2-FA</button>
               @else
                 <button class="btn" id="btn-enable">Disable 2-FA</button>
