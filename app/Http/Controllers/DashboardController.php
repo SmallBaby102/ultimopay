@@ -284,7 +284,7 @@ class DashboardController extends Controller
         $response2 = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Authorization'=> 'Bearer '.$configurator_access_token,
-        ])->post("https://config.plusqo.shiftmarketsdev.com/api/users/{$userId}/accounts/{$account_id}/balancecorrection",  [
+        ])->put("https://config.plusqo.shiftmarketsdev.com/api/users/{$userId}/accounts/{$account_id}/balancecorrection",  [
             "userId"=> $userId, 
             "accountId"=> $account_id, 
             "type"=> 5, 
@@ -293,7 +293,7 @@ class DashboardController extends Controller
             "currency"=>  "USDT"
         ]);
         return $response2;
-        
+
          if($response2->successful()){
             $api_key = 'Bearer ' . env("API_KEY");
             $response1 = Http::withHeaders([
