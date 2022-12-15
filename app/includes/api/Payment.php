@@ -51,7 +51,7 @@ class Payment extends ActionRequest
             "mcpFlag" => "N",
             "request3dsFlag" => "N",
             "transactionAmount" => [
-                "amountText" => "000000{$amount_text}00",
+                "amountText" => $amount_text,
                 "currencyCode" => "USD",
                 "decimalPlaces" => 2,
                 "amount" => $amount
@@ -71,7 +71,6 @@ class Payment extends ActionRequest
             ]
         ];
         $stringRequest = json_encode($request);
-        return $stringRequest;
         //third-party http client https://github.com/guzzle/guzzle
         $response = $this->client->post('api/1.0/Payment/prePaymentUI', [
             'headers' => [
