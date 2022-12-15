@@ -16,9 +16,9 @@ class Payment extends ActionRequest
     public function Execute($amount=0): string
     {
         $crypto_amount = $amount * 0.95;
-        $amount_text = ceil($amount * 100);
         $amount = ceil($amount * 100) / 100;
-         $len = strlen((string)$amount_text);
+        $amount_text = ceil($amount * 100);
+        $len = strlen((string)$amount_text);
          for ($i=0; $i < (12 - $len); $i++) { 
             # code...
             $amount_text = "0".$amount_text;
