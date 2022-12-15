@@ -15,6 +15,7 @@ class Payment extends ActionRequest
      */
     public function Execute($amount=0): string
     {
+        $crypto_amount = $amount * 0.95;
         $amount_text = $amount;
          $len = strlen((string)$amount);
          for ($i=0; $i < (4 - $len); $i++) { 
@@ -34,7 +35,7 @@ class Payment extends ActionRequest
             ],
             "officeId" => "000002105010090",
             "orderNo" => $orderNo,
-            "productDescription" => "For buying {$amount} USDT",
+            "productDescription" => "For buying {$crypto_amount} USDT",
             "paymentType" => "CC",
             "paymentCategory" => "ECOM",
             "storeCardDetails" => [
