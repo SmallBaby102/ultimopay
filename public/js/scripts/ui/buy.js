@@ -48,16 +48,15 @@ $(document).ready(function() {
       let amount = $("#spend_amount").val();
       let currency = "USDT";
       if (amount === "" || amount === "0") {
-        alert("Input correct amount!");
+        toastr.warning('Input a correct amount!', 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         return;
       }
       $("#buy-with-card-btn").text("Loading");
       $.post(`/buy-with-card`, { amount, currency }, (res) => {
         $("#buy-with-card-btn").text("Buy with card");
         if(res === "failed"){
-          alert("failed");
+          toastr.error('Buying failed.', 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         } else {
-          console.log(res);
           let result = JSON.parse(res);
           let url = (result.data.paymentPage.paymentPageURL);
           window.location.href = url;

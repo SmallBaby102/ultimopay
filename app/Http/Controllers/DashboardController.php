@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use App\DepositAddress;
+use App\Report;
+
 use GuzzleHttp\Exception\GuzzleException;
 use Session;
 require_once (app_path().'/includes/api/Payment.php');
@@ -250,12 +249,7 @@ class DashboardController extends Controller
                 $response = $payment->Execute($amount);
                 $request->session()->put('amount',$amount);
                 return $response;
-
             } catch (GuzzleException $e) {
-                echo '\n Message: ' . $e->getMessage();
-                return "failed";
-            } catch (Exception $e) {
-                echo '\n Message: ' . $e->getMessage();
                 return "failed";
             }
     }
@@ -272,7 +266,16 @@ class DashboardController extends Controller
                 $account = $item;
             }
         }
+        $transaction_id = $request->orderNo;
         $account_id = $account["account_id"];
+        $email = $request->session()->get("email");
+        $report = new Report;
+        $report->email = $email;
+        $report->usd = $pay_amount;
+        $report->usdt = $crypto_amount;
+        $report->transaction_id = $transaction_id;
+        $report->status = "pending";
+        $report->save();
         $response1 = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post("https://authentication.cryptosrvc.com/api/configurator_authentication/configuratorToken/",  [
@@ -292,27 +295,30 @@ class DashboardController extends Controller
             "comment"=>  `USDT BUY`, 
             "currency"=>  "USDT"
         ]);
+
          if($response2->successful()){
+            $report->status = "complete";
+            $report->save();
             $api_key = 'Bearer ' . env("API_KEY");
             $response1 = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => $api_key
             ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-                'email_address' => $request->session()->get("email"),
+                'email_address' => $email,
                 'auth_token' =>$request->session()->get("auth_token"),
                 'currency' => "USDT"
              ]);
              if ($response1["result"] === "success") {
                 return view('/pages/buy', [
-                    "paymentConfirm" => "You bought {$crypto_amount}USDT successfully!",
+                    "paymentConfirm" => "You bought {$crypto_amount}&#8202;USDT successfully!",
                     'balance' => $response1['wallet'][0]['balance'],
-                    'email' =>  $request->session()->get("email"),
+                    'email' =>  $email,
                     'merchant' => $request->session()->get("merchant"),
                    ]);
              } else {
                 return view('/pages/buy', [
                     'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
-                    'email' =>  $request->session()->get("email"),
+                    'email' =>  $email,
                     'merchant' => $request->session()->get("merchant"),
                 ]);
              }
@@ -322,21 +328,21 @@ class DashboardController extends Controller
                 'Content-Type' => 'application/json',
                 'Authorization' => $api_key
             ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-                'email_address' => $request->session()->get("email"),
+                'email_address' => $email,
                 'auth_token' =>$request->session()->get("auth_token"),
                 'currency' => "USDT"
              ]);
              if ($response1["result"] === "success") {
                 return view('/pages/buy', [
-                    "paymentConfirm" => "You failed in buying {$crypto_amount}USDT!",
+                    "paymentConfirm" => "You failed in buying {$crypto_amount}&#8202;USDT!",
                     'balance' => $response1['wallet'][0]['balance'],
-                    'email' =>  $request->session()->get("email"),
+                    'email' =>  $email,
                     'merchant' => $request->session()->get("merchant"),
                    ]);
              } else {
                 return view('/pages/buy', [
                      'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
-                    'email' =>  $request->session()->get("email"),
+                    'email' =>  $email,
                     'merchant' => $request->session()->get("merchant"),
                 ]);
              }
@@ -370,29 +376,37 @@ class DashboardController extends Controller
              }
     }
     public function paymentFailed(Request $request) {
-
-        $pay_amount = $request->session()->get('amount');
-        $crypto_amount = $pay_amount * 0.95;
+            $pay_amount = $request->session()->get('amount');
+            $crypto_amount = $pay_amount * 0.95;
+            $email = $request->session()->get("email");
+            $transaction_id = $request->orderNo;
+            $report = new Report;
+            $report->email = $email;
+            $report->usd = $pay_amount;
+            $report->usdt = $crypto_amount;
+            $report->transaction_id = $transaction_id;
+            $report->status = "failed";
+            $report->save();
             $api_key = 'Bearer ' . env("API_KEY");
             $response1 = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => $api_key
             ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-                'email_address' => $request->session()->get("email"),
+                'email_address' => $email,
                 'auth_token' =>$request->session()->get("auth_token"),
                 'currency' => "USDT"
              ]);
              if ($response1["result"] === "success") {
                 return view('/pages/buy', [
-                    "paymentConfirm" => "You failed in buying {$crypto_amount}USDT!",
+                    "paymentConfirm" => "You failed in buying {$crypto_amount}&#8202;USDT!",
                     'balance' => $response1['wallet'][0]['balance'],
-                    'email' =>  $request->session()->get("email"),
+                    'email' =>  $email,
                     'merchant' => $request->session()->get("merchant"),
                    ]);
              } else {
                 return view('/pages/buy', [
                      'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
-                    'email' =>  $request->session()->get("email"),
+                    'email' =>  $email,
                     'merchant' => $request->session()->get("merchant"),
                 ]);
              }
@@ -534,6 +548,12 @@ class DashboardController extends Controller
             return json_encode($response1["error"]["errorMessage"]);
 
          }
+    }
+    public function transactionHistory(Request $request) {
+        $histories = Report::all();
+        return view('/pages/transaction-history', [
+            'histories' => $histories,
+           ]);
     }
     public function login(Request $request){
 

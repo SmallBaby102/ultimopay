@@ -7,10 +7,12 @@
         {{-- vendor files --}}
         <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/datatables.min.css')) }}">
         <link rel="stylesheet" href="{{ asset(mix('vendors/css/tables/datatable/extensions/dataTables.checkboxes.css')) }}">
+        <link rel="stylesheet" href="{{ asset(mix('vendors/css/extensions/toastr.css')) }}">
 @endsection
 @section('page-style')
         {{-- Page css files --}}
         {{-- <link rel="stylesheet" href="{{ asset(mix('css/pages/data-list-view.css')) }}"> --}}
+        <link rel="stylesheet" href="{{ asset('css/plugins/extensions/toastr.css') }}">
 @endsection
 
 @section('content')
@@ -235,6 +237,7 @@
         <script src="{{ asset(mix('vendors/js/tables/datatable/buttons.bootstrap.min.js')) }}"></script>
         <script src="{{ asset(mix('vendors/js/tables/datatable/dataTables.select.min.js')) }}"></script>
         <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.checkboxes.min.js')) }}"></script>
+        <script src="{{ asset(mix('vendors/js/extensions/toastr.min.js')) }}"></script>
 @endsection
 @section('page-script')
         <script> 

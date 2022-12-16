@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Products extends Model
+class Report extends Model
 {
     //
+    protected $fillable = ['email'];
 }

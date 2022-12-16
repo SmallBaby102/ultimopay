@@ -38,11 +38,11 @@ $(document).ready(function() {
       let code = $("#code").val();
       let password = $("#password").val();
       if (network === "none") {
-        alert("You must select a network!");
+         toastr.warning("Amount must be over 100", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         return;
       }
       if (amount < 100) {
-          alert("Amount must be over 100");
+          toastr.warning("Amount must be over 100", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
           return;
       }
 
@@ -50,8 +50,15 @@ $(document).ready(function() {
       $.post(`/withdraw`, { code, password, network, address, amount }, (res) => {
         $("#withdraw").text("Withdraw");
         console.log(res);
+          // Position Top Center
         let response = JSON.parse(res);
-        alert(response.result);
+        if(response.result === "success"){
+          toastr.success('Withdraw succeeded.', 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+          window.location.href = withdraw-page + "/withdraw-page";
+        }
+        else {
+          toastr.error('Withdraw failed.', 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+        }
       })   
   })
 })

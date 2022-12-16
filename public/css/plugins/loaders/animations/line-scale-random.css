@@ -1,0 +1,77 @@
+/*========================================================
+        DARK LAYOUT
+=========================================================*/
+
+@-webkit-keyframes line-scale-party {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes line-scale-party {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.line-scale-party > div:nth-child(1) {
+  -webkit-animation-delay: -0.07s;
+          animation-delay: -0.07s;
+  -webkit-animation-duration: 0.65s;
+          animation-duration: 0.65s;
+}
+
+.line-scale-party > div:nth-child(2) {
+  -webkit-animation-delay: 0.21s;
+          animation-delay: 0.21s;
+  -webkit-animation-duration: 0.84s;
+          animation-duration: 0.84s;
+}
+
+.line-scale-party > div:nth-child(3) {
+  -webkit-animation-delay: 0.65s;
+          animation-delay: 0.65s;
+  -webkit-animation-duration: 1.06s;
+          animation-duration: 1.06s;
+}
+
+.line-scale-party > div:nth-child(4) {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s;
+  -webkit-animation-duration: 0.43s;
+          animation-duration: 0.43s;
+}
+
+.line-scale-party > div {
+  background-color: #b8c2cc;
+  width: 4px;
+  height: 3.45rem;
+  border-radius: 2px;
+  margin: 2px;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  display: inline-block;
+  -webkit-animation-name: line-scale-party;
+          animation-name: line-scale-party;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-delay: 0;
+          animation-delay: 0;
+}
+

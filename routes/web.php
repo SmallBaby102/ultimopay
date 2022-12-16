@@ -23,6 +23,7 @@ Route::get('/payment-confirmation', 'DashboardController@paymentConfirmation');
 Route::get('/payment-cancellation', 'DashboardController@paymentCancellation');
 Route::get('/payment-failed', 'DashboardController@paymentFailed');
 Route::get('/payment-backend', 'DashboardController@paymentBackend');
+Route::get('/transaction-history', 'DashboardController@transactionHistory');
 Route::post('/set-2Fa', 'DashboardController@setTwoFa');
 Route::post('/disable-2Fa', 'DashboardController@disableTwoFa');
 Route::post('/withdraw', 'DashboardController@withdraw');

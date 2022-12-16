@@ -13,11 +13,13 @@ class CreateDepositAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('deposit_addresses', function (Blueprint $table) {
+        Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->string('email');
-            $table->string('network');
-            $table->string('address')->nullable();
+            $table->string('usd');
+            $table->string('usdt');
+            $table->string('transaction_id')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

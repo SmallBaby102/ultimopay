@@ -22,7 +22,7 @@ $(document).ready(function() {
               $("#btn-enable").text("Disable 2-FA"); 
             } else {
                 $("#btn-enable").text("Enable 2-FA");
-                alert("failed");
+                toastr.error('failed.', '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             }
           })
       } else {
@@ -33,7 +33,7 @@ $(document).ready(function() {
               $("#btn-enable").text("Enable 2-FA"); 
             } else {
               $("#btn-enable").text("Disable 2-FA"); 
-              alert("failed");
+                toastr.error('failed.', '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             }
           })    
       }
