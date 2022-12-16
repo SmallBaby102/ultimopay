@@ -214,7 +214,7 @@
                     <div class="content_title mt-2">TETHER USD ADDRESS</div>
                     <input type="text" class="address_input " id="address" placeholder="ENTERE TETHER USD ADDRESS" />
                     <div class="content_title mt-2">2-FA code&#8202;(from Google Authenticator App)</div>
-                    <input type="text" class="address_input " id="code" placeholder="ENTERE 2-FA code(for ULTIMOPAY.IO)" />
+                    <input type="text" class="address_input " id="code" placeholder="ENTERE 2-FA code&#8202;(for ULTIMOPAY.IO)" />
                     <div class="content_title mt-2">Password</div>
                     <input type="password" class="address_input " id="password" placeholder="ENTER Login Password" />
                 
