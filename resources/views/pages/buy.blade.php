@@ -193,7 +193,7 @@
               <div class="withdraw_content">
                   @if(isset($paymentConfirm))
                   <div class="buy_success_desc" >
-                        {{ $paymentConfirm }}
+                        {!! $paymentConfirm !!}
                   </div>  
                   @endif
                   <div class="two_desc">
