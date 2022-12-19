@@ -23,7 +23,11 @@ $(document).ready(function() {
               $("#btn-enable").text("Disable 2-FA"); 
             } else {
                 $("#btn-enable").text("Enable 2-FA");
-                toastr.error(response.error.errorMessage, '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+                if(response.error.errorMessage === "invalid credentials")
+                {
+                  toastr.error("Invalid Password", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+                } else
+                  toastr.error(response.error.errorMessage, '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             }
           })
       } else {
@@ -34,8 +38,12 @@ $(document).ready(function() {
             if(response.result === "success"){
               $("#btn-enable").text("Enable 2-FA"); 
             } else {
-              $("#btn-enable").text("Disable 2-FA"); 
-                toastr.error(response.error.errorMessage, '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+                $("#btn-enable").text("Disable 2-FA"); 
+                if(response.error.errorMessage === "invalid credentials")
+                {
+                  toastr.error("Invalid Password", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+                } else
+                  toastr.error(response.error.errorMessage, '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             }
           })    
       }

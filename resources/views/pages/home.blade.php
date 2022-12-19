@@ -108,7 +108,7 @@
                 </div>
                 </div>
                 <div class="text-right"> 
-                <div id="balance" class="coin_balance text-right"> {{$balance}} </div>
+                <div id="balance" class="coin_balance text-right"> {{ (float)(floor($balance * 1000000)/1000000) }} </div>
                 <div class="d-flex menu " style="flex-flow: wrap">
                         <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
                         <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>

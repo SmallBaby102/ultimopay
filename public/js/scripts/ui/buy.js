@@ -28,17 +28,23 @@ $(document).ready(function() {
     }
 
   })
+  let originVal = 0;
   $("#receive_amount").on('keyup', function(e) {
     if ($("#receive_amount").val() === "") {
       $("#spend_amount").val("");
     } else {
+      if(parseFloat($("#spend_amount").val()) > 5000){
+        $("#amount").val(originVal);
+        toastr.warning("Please input value under 5000!", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+        return;
+      }
       let receive_amount = parseFloat($("#receive_amount").val()) / 0.95;
       $("#spend_amount").val(Math.ceil(receive_amount * 100) / 100);
     }
   })
   $("#receive_amount").on('keydown', function(e) {
     if (/^[\d+\.]$/.test(e.key) || e.key === "Backspace" || e.key === "Delete"|| e.key === "ArrowLeft"|| e.key === "ArrowRight"){
-      console.log(e.key);
+      originVal = $("#spend_amount").val();
     }
     else {
       e.preventDefault();

@@ -68,7 +68,11 @@ $(document).ready(function() {
           window.location.href = withdraw-page + "/withdraw-page";
         }
         else {
-          toastr.error(response.error.errorMessage, 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+          if(response.error.errorMessage === "invalid credentials")
+          {
+            toastr.error("Invalid Password", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+          } else
+            toastr.error(response.error.errorMessage, 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         }
       })   
   })
