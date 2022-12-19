@@ -207,6 +207,7 @@
                           <tbody>
                             @if (isset($histories))
                               @foreach ($histories as $history)
+                                <?php $color = "success" ?>
                                 @if($history["status"] === 'success')
                                   <?php $color = "success" ?>
                                 @elseif($history["status"] === 'pending')
