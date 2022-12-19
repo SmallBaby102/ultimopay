@@ -198,7 +198,6 @@
                         <table class="table data-list-view">
                           <thead>
                             <tr>
-                              <th></th>
                               <th>Date</th>
                               <th>USD</th>
                               <th>USDT</th>
@@ -208,7 +207,6 @@
                           <tbody>
                             @if (isset($histories))
                               @foreach ($histories as $history)
-                                <?php $color = "success" ?>
                                 @if($history["status"] === 'success')
                                   <?php $color = "success" ?>
                                 @elseif($history["status"] === 'pending')
@@ -223,7 +221,6 @@
                                 ?>
 
                                 <tr>
-                                  <td></td>
                                   <td class="product-name">{{ date('d/m/Y G:i', strtotime($history["created_at"] ))}}</td>
                                   <td class="product-category">{{ $history["usd"] }}</td>
                                   <td class="product-category">{{ $history["usdt"] }}</td>

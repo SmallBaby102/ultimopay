@@ -33,13 +33,13 @@ $(document).ready(function() {
   // init list view datatable
   var dataListView = $(".data-list-view").DataTable({
     responsive: false,
-    columnDefs: [
-      {
-        orderable: true,
-        targets: 0,
-        checkboxes: { selectRow: true }
-      }
-    ],
+    // columnDefs: [
+    //   {
+    //     orderable: true,
+    //     targets: 0,
+    //     checkboxes: { selectRow: true }
+    //   }
+    // ],
     dom:
       '<"top"<"actions action-btns"B><"action-filters"lf>><"clear">rt<"bottom"<"actions">p>',
     oLanguage: {
@@ -47,9 +47,6 @@ $(document).ready(function() {
       sSearch: ""
     },
     aLengthMenu: [[4, 10, 15, 20], [4, 10, 15, 20]],
-    select: {
-      style: "multi"
-    },
     order: [[1, "asc"]],
     bInfo: false,
     pageLength: 4,
@@ -71,13 +68,13 @@ $(document).ready(function() {
     }
   });
 
-  dataListView.on('draw.dt', function(){
-    setTimeout(function(){
-      if (navigator.userAgent.indexOf("Mac OS X") != -1) {
-        $(".dt-checkboxes-cell input, .dt-checkboxes").addClass("mac-checkbox")
-      }
-    }, 50);
-  });
+  // dataListView.on('draw.dt', function(){
+  //   setTimeout(function(){
+  //     if (navigator.userAgent.indexOf("Mac OS X") != -1) {
+  //       $(".dt-checkboxes-cell input, .dt-checkboxes").addClass("mac-checkbox")
+  //     }
+  //   }, 50);
+  // });
 
   // To append actions dropdown before add new button
   var actionDropdown = $(".actions-dropodown")
@@ -122,8 +119,8 @@ $(document).ready(function() {
   }
   Dropzone.options.dataListUpload.complete()
 
-  // mac chrome checkbox fix
-  if (navigator.userAgent.indexOf("Mac OS X") != -1) {
-    $(".dt-checkboxes-cell input, .dt-checkboxes").addClass("mac-checkbox")
-  }
+  // // mac chrome checkbox fix
+  // if (navigator.userAgent.indexOf("Mac OS X") != -1) {
+  //   $(".dt-checkboxes-cell input, .dt-checkboxes").addClass("mac-checkbox")
+  // }
 })
