@@ -203,8 +203,8 @@
                     </div>
                    
                   </div>
-                  <div class="d-flex justify-content-end">
-                      <a href="/transaction-history">Transaction History</a>
+                  <div class="d-flex justify-content-start">
+                      <a href="/transaction-history">Order History</a>
                   </div>
                   <div class="w-75 m-auto text-center">
                     <div class="content_title mt-2">YOU SPEND</div>

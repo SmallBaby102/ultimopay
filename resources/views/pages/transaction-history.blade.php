@@ -11,7 +11,7 @@
 @endsection
 @section('page-style')
         {{-- Page css files --}}
-        {{-- <link rel="stylesheet" href="{{ asset(mix('css/pages/data-list-view.css')) }}"> --}}
+        <link rel="stylesheet" href="{{ asset('css/pages/data-list-view.css') }}">
         <link rel="stylesheet" href="{{ asset('css/plugins/extensions/toastr.css') }}">
 @endsection
 
@@ -208,6 +208,7 @@
                           <tbody>
                             @if (isset($histories))
                               @foreach ($histories as $history)
+                                <?php $color = "success" ?>
                                 @if($history["status"] === 'success')
                                   <?php $color = "success" ?>
                                 @elseif($history["status"] === 'pending')
@@ -260,5 +261,5 @@
             // let balance = '<?php echo isset($balance) ?  $balance : 0 ?>'
         </script>
         {{-- Page js files --}}
-        <script src="{{ asset('js/scripts/ui/buy.js') }}"></script>
+        <script src="{{ asset('js/scripts/ui/transaction_history.js') }}"></script>
 @endsection
