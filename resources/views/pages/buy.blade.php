@@ -65,7 +65,7 @@
     color: white;
    }
    .withdraw_content {
-    padding: 25px;
+    padding: 10px 25px 25px 25px;
    }
    .content_title {
     text-align: left;

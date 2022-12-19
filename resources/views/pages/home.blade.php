@@ -54,7 +54,8 @@
     color: white;
    }
    .withdraw_content {
-    padding: 40px;
+        padding: 10px 25px 25px 25px;
+
    }
    .content_title {
     font-size: 1.3rem;

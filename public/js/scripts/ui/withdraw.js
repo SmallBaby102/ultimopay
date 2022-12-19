@@ -14,18 +14,26 @@ $(document).ready(function() {
   if (available_amount < 0) {
     available_amount = 0;
   }
-  $("#available_amount").html(Math.floor(available_amount * 100) / 100 + "&#8202;USDT");
+  let originVal = 0;
 
+  $("#available_amount").html(Math.floor(available_amount * 100) / 100 + "&#8202;USDT");
+  
   $("#amount").on('keyup', function(e) {
     if ($("#amount").val() === "") {
     $("#withdraw_fee").html("5&#8202;USDT + 5% of withdraw amount");
     } else {
-    let withdraw_fee = 5 + parseFloat($("#amount").val()) * 5 / 100;
+      if(parseFloat($("#amount").val()) > available_amount){
+        $("#amount").val(originVal);
+        toastr.warning("Please input value under the available amount!", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+        return;
+      }
+      let withdraw_fee = 5 + parseFloat($("#amount").val()) * 5 / 100;
       $("#withdraw_fee").html(Math.ceil(withdraw_fee * 100) / 100 + "&#8202;USDT");
     }
   })
   $("#amount").on('keydown', function(e) {
      if (/^[\d+\.]$/.test(e.key) || e.key === "Backspace" || e.key === "Delete"|| e.key === "ArrowLeft"|| e.key === "ArrowRight"){
+      originVal = $("#amount").val();
     }
     else {
       e.preventDefault();

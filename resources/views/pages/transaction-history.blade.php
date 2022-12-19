@@ -65,7 +65,7 @@
     color: white;
    }
    .withdraw_content {
-    padding: 25px;
+    padding: 10px 25px 25px 25px;
    }
    .content_title {
     text-align: left;
@@ -199,6 +199,7 @@
                           <thead>
                             <tr>
                               <th>Date</th>
+                              <th>Order No</th>
                               <th>Paid(USD)</th>
                               <th>Recieved(USDT)</th>
                               <th>Status</th>
@@ -223,6 +224,7 @@
 
                                 <tr>
                                   <td class="product-name">{{ date('d/m/Y G:i', strtotime($history["created_at"] ))}}</td>
+                                  <td class="product-category">{{ $history["transaction_id"] }}</td>
                                   <td class="product-category">{{ $history["usd"] }}</td>
                                   <td class="product-category">{{ $history["usdt"] }}</td>
                                   <td class="product-price {{$color}}">{{ strtoupper($history["status"]) }}</td>
