@@ -180,7 +180,7 @@
             <div class="row crypto_content p-2">
               <div class="text-center title align-center justify-content-center">
                   <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
-                  <p id="balance" class="text-left">  {{$balance}} 
+                  <p id="balance" class="text-left" style="display: none">  {{$balance}} 
                   </p>
                   <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
                 </div>
@@ -219,6 +219,10 @@
                     </div>
                     
                     <div class="mt-2">
+                      <button class="btn content_btn" type="button" disabled  id="buy-processing" style="display: none">
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Processing...
+                      </button>
                       <button class="btn content_btn" id="buy-with-card-btn" >Buy with card</button>
                     </div>
                     <div class="mt-2 ">

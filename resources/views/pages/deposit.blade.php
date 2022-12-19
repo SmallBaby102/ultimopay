@@ -151,7 +151,7 @@
           <div class="row crypto_content p-2">
             <div class="text-center title align-center justify-content-center">
                 <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
-                <p id="balance" class="text-left">  {{$balance}} 
+                <p id="balance" class="text-left" style="display: none">  {{$balance}} 
                 </p>
                 <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
               </div>
@@ -161,43 +161,44 @@
                         <a href="{{url('buy-page')}}" class="btn menu_btn" >Buy with card</a>
             </div>
           </div>
-          <div class="deposit_content pl-2 pr-2">
-            <div class="form-group mt-2 ">
-              <div class="content_title">NETWORK</div>
-              <select class="form-control network_select">
-                <option value="none">--Select Network--</option>
-                <option value="ETHEREUM_ERC20">Ethereum&#8202;(ERC20)</option>
-                <option value="TRON_TRC20">Tron&#8202;(TRC20)</option>
-                <option value="BNB_SMART_CHAIN_BEP20">BNB Smart Chain&#8202;(BEP20)</option>
-              </select>
-            </div>
-          </div>
-          <div class="important_notice pl-2 pr-2">
-              Please note that you do not mistake the network, if you deposit via another network  your assets may be lost.
-          </div>
-          <div class="deposit_address p-2" style="display:none" >
-                <div class="row" style="align-items: center">
-                  
-                  <div class="col-sm-6 text-left">
-                    <div class="pr-0 text-left">
-                      <div class="form-group">
-                        <div class="content_title">DEPOSIT ADDRESS</div>
-                        <div class="d-flex">
-                          <input type="text" class="form-control" readonly id="copy-to-clipboard-input" value="">
-                          <div class="text-center">
-                            <button class="btn" id="btn-copy">Copy</button>
+          <div class="withdraw_content pl-2 pr-2">
+              <div class="form-group ">
+                <div class="content_title">NETWORK</div>
+                <select class="form-control network_select">
+                  <option value="none">--Select Network--</option>
+                  <option value="ETHEREUM_ERC20">Ethereum&#8202;(ERC20)</option>
+                  <option value="TRON_TRC20">Tron&#8202;(TRC20)</option>
+                  <option value="BNB_SMART_CHAIN_BEP20">BNB Smart Chain&#8202;(BEP20)</option>
+                </select>
+              </div>
+              <div class="important_notice pl-2 pr-2">
+                  Please note that you do not mistake the network, if you deposit via another network  your assets may be lost.
+              </div>
+                <div class="deposit_address p-2" style="display:none" >
+                      <div class="row" style="align-items: center">
+                        
+                        <div class="col-sm-6 text-left">
+                          <div class="pr-0 text-left">
+                            <div class="form-group">
+                              <div class="content_title">DEPOSIT ADDRESS</div>
+                              <div class="d-flex">
+                                <input type="text" class="form-control" readonly id="copy-to-clipboard-input" value="">
+                                <div class="text-center">
+                                  <button class="btn" id="btn-copy">Copy</button>
+                                </div>
+              
+                              </div>
+                            </div>
                           </div>
-        
                         </div>
+                        <img alt="Address" id="deposit_address_qrcode" class=""
+                          src=""
+                        />
+                      
                       </div>
-                    </div>
-                  </div>
-                  <img alt="Address" id="deposit_address_qrcode" class=""
-                    src=""
-                  />
-                
                 </div>
           </div>
+          
       @endif
   </div>
   {{-- Data list view end --}}

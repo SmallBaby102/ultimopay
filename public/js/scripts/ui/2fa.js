@@ -21,6 +21,7 @@ $(document).ready(function() {
             let response = JSON.parse(res);
             if(response.result === "success"){
               $("#btn-enable").text("Disable 2-FA"); 
+              toastr.success("Successfully Enabled 2-FA", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             } else {
                 $("#btn-enable").text("Enable 2-FA");
                 if(response.error.errorMessage === "invalid credentials")
@@ -36,6 +37,7 @@ $(document).ready(function() {
             let response = JSON.parse(res);
             console.log(res);
             if(response.result === "success"){
+              toastr.success("Successfully Disabled 2-FA", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
               $("#btn-enable").text("Enable 2-FA"); 
             } else {
                 $("#btn-enable").text("Disable 2-FA"); 

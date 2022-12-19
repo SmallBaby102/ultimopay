@@ -8,9 +8,39 @@
 ==========================================================================================*/
   // On Edit
 
-
+  function limitDecimal(t, n){
+    var s;
+    if (t === "" || t === null) {
+      t = 0;
+    }
+    var string = String(t);
+    var decimal = "";
+    if (string.substr(0, string.indexOf(".")) === -1|| string.substr(0, string.indexOf(".")) === "") {
+      for (let index = 0; index < n; index++) {
+        decimal += "0";
+      }   
+      s = string  + "." +decimal;
+    } else {
+       decimal = string.substr(string.indexOf("."), n+1);
+       let start = decimal.length -1;
+       if(start < n){
+        for (let index = start; index < n; index++) {
+              decimal += "0";
+        }
+      } else {
+         s = string.substr(0, string.indexOf(".")) + string.substr(string.indexOf("."), n+1);
+         return s;
+      }
+      
+      s = string.substr(0, string.indexOf(".")) +decimal;
+      }
+      return s;
+  }  
 $(document).ready(function() {
   "use strict"
+  $("#balance").html(limitDecimal($("#balance").text(), 6));
+  $("#balance").show();
+
   $(".network_select").change((e) => {
     $("#copy-to-clipboard-input").val("");
     let network = e.target.value;

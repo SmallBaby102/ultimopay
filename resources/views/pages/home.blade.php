@@ -108,7 +108,7 @@
                 </div>
                 </div>
                 <div class="text-right"> 
-                <div id="balance" class="coin_balance text-right"> {{ (float)(floor($balance * 1000000)/1000000) }} </div>
+                <div id="balance" class="coin_balance text-right" style="display: none"> {{ $balance }} </div>
                 <div class="d-flex menu " style="flex-flow: wrap">
                         <a href="{{url('deposit-page')}}" class="btn menu_btn" >Deposit</a>
                         <a href="{{url('withdraw-page')}}" class="btn menu_btn" >Withdraw</a>
@@ -134,7 +134,37 @@
 @endsection
 @section('page-script')
         <script> 
-            let base_url = '<?php echo url(""); ?>'
+            let base_url = '<?php echo url(""); ?>';
+            function limitDecimal(t, n){
+                var s;
+                if (t === "" || t === null) {
+                t = 0;
+                }
+                var string = String(t);
+                var decimal = "";
+                if (string.substr(0, string.indexOf(".")) === -1|| string.substr(0, string.indexOf(".")) === "") {
+                for (let index = 0; index < n; index++) {
+                        decimal += "0";
+                }   
+                s = string  + "." +decimal;
+                } else {
+                decimal = string.substr(string.indexOf("."), n+1);
+                let start = decimal.length -1;
+                if(start < n){
+                        for (let index = start; index < n; index++) {
+                        decimal += "0";
+                        }
+                } else {
+                        s = string.substr(0, string.indexOf(".")) + string.substr(string.indexOf("."), n+1);
+                        return s;
+                }
+                
+                s = string.substr(0, string.indexOf(".")) +decimal;
+                }
+                return s;
+                }  
+            $("#balance").html(limitDecimal($("#balance").text(), 6));
+            $("#balance").show();
         </script>
         {{-- Page js files --}}
         <script src="{{ asset(mix('js/scripts/ui/data-list-view.js')) }}"></script>

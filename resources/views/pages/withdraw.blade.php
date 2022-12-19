@@ -161,7 +161,7 @@
             <div class="row crypto_content p-2">
               <div class="text-center title align-center justify-content-center">
                   <p class="text-left"><img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>Tether USD</p>
-                  <p id="balance" class="text-left">  {{$balance}} 
+                  <p id="balance" class="text-left" style="display: none">  {{$balance}} 
                   </p>
                   <p class="text-left" style="font-weight:300; font-size:25px"> USDT</p>
                 </div>
@@ -184,7 +184,7 @@
                   </div>
                   @endif
                   @if($tfaStatus === "enabled")
-                    <div class="form-group mt-2 ">
+                    <div class="form-group">
                       <div class="content_title">NETWORK</div>
                       <select class="form-control network_select" id="network">
                         <option value="none">--Select Network--</option>
@@ -220,6 +220,10 @@
                     <input type="password" class="address_input " id="password" placeholder="ENTER Login Password" />
                 
                     <div class="mt-2 text-center">
+                        <button class="btn content_btn" type="button" disabled  id="withdraw-processing" style="display: none">
+                          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                          Processing...
+                        </button>
                         <button class="btn content_btn" id="withdraw" >WITHDRAW</button>
                     </div>
                   @endif

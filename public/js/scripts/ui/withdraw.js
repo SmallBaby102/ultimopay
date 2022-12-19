@@ -7,6 +7,34 @@
     Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
   // On Edit
+  function limitDecimal(t, n){
+    var s;
+    if (t === "" || t === null) {
+      t = 0;
+    }
+    var string = String(t);
+    var decimal = "";
+    if (string.substr(0, string.indexOf(".")) === -1|| string.substr(0, string.indexOf(".")) === "") {
+      for (let index = 0; index < n; index++) {
+        decimal += "0";
+      }   
+      s = string  + "." +decimal;
+    } else {
+       decimal = string.substr(string.indexOf("."), n+1);
+       let start = decimal.length -1;
+       if(start < n){
+        for (let index = start; index < n; index++) {
+              decimal += "0";
+        }
+      } else {
+         s = string.substr(0, string.indexOf(".")) + string.substr(string.indexOf("."), n+1);
+         return s;
+      }
+      
+      s = string.substr(0, string.indexOf(".")) +decimal;
+      }
+      return s;
+  }  
 
 $(document).ready(function() {
   "use strict"
@@ -15,8 +43,10 @@ $(document).ready(function() {
     available_amount = 0;
   }
   let originVal = 0;
-
-  $("#available_amount").html(Math.floor(available_amount * 100) / 100 + "&#8202;USDT");
+  $("#balance").html(limitDecimal($("#balance").text(), 6));
+  $("#balance").show();
+  $("#available_amount").html(Math.floor(available_amount * 1000000) / 1000000 + "&#8202;USDT");
+  $("#withdraw-processing").hide();
   
   $("#amount").on('keyup', function(e) {
     if ($("#amount").val() === "") {
@@ -28,7 +58,7 @@ $(document).ready(function() {
         return;
       }
       let withdraw_fee = 5 + parseFloat($("#amount").val()) * 5 / 100;
-      $("#withdraw_fee").html(Math.ceil(withdraw_fee * 100) / 100 + "&#8202;USDT");
+      $("#withdraw_fee").html(Math.ceil(withdraw_fee * 1000000) / 1000000 + "&#8202;USDT");
     }
   })
   $("#amount").on('keydown', function(e) {
@@ -57,15 +87,16 @@ $(document).ready(function() {
           toastr.warning("Address is required!", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
           return;
       }
-      $("#withdraw").text("Processing...");
+      $("#withdraw").hide();
+      $("#withdraw-processing").show();
       $.post(`/withdraw`, { code, password, network, address, amount }, (res) => {
-        $("#withdraw").text("Withdraw");
-        console.log(res);
+        $("#withdraw").show();
+        $("#withdraw-processing").hide();
           // Position Top Center
         let response = JSON.parse(res);
         if(response.result === "success"){
           toastr.success('Withdraw succeeded.', 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
-          window.location.href = withdraw-page + "/withdraw-page";
+          window.location.href = base_url + "/withdraw-page";
         }
         else {
           if(response.error.errorMessage === "invalid credentials")
