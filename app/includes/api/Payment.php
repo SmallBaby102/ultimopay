@@ -13,7 +13,7 @@ class Payment extends ActionRequest
     /**
      * @throws GuzzleException
      */
-    public function Execute($amount=0): string
+    public function Execute($amount = 0 ): string
     {
         $crypto_amount = $amount * 0.95;
         $crypto_amount = floor($amount * 100) / 100;
@@ -177,7 +177,98 @@ class Payment extends ActionRequest
      * @throws GuzzleException
      * @throws Exception
      */
-    public function ExecuteJose(): string
+    public function ExecuteJose($amount = 0): string
+    {
+        $crypto_amount = $amount * 0.95;
+        $crypto_amount = floor($amount * 100) / 100;
+        $amount = ceil($amount * 100) / 100;
+        $amount_text = ceil($amount * 100);
+        $len = strlen((string)$amount_text);
+         for ($i=0; $i < (12 - $len); $i++) { 
+            # code...
+            $amount_text = "0".$amount_text;
+
+         }
+        $now = Carbon::now();
+        $orderNo = $now->getPreciseTimestamp(3);
+        $app_url = env('APP_URL');
+        $request = [
+            "apiRequest" => [
+                "requestMessageID" => Uuid::generate()->string,
+                "requestMessageID" => "05ac1eb1-d931-495e-a656-3c32c0048e19",
+                "requestDateTime" => "2022-12-07T09:13:34.001+0000",
+                "language" => "en-US"
+            ],
+            "officeId" => "000002105010090",
+            "orderNo" => $orderNo,
+            "productDescription" => "For buying {$crypto_amount} USDT",
+            "paymentType" => "CC",
+            "paymentCategory" => "ECOM",
+            "storeCardDetails" => [
+                "storeCardFlag" => "N",
+                "storedCardUniqueID" => Uuid::generate()->string
+            ],
+            "installmentPaymentDetails" => [
+                "ippFlag" => "N",
+                "installmentPeriod" => 0,
+                "interestType" => null
+            ],
+            "mcpFlag" => "N",
+            "request3dsFlag" => "N",
+            "transactionAmount" => [
+                "amountText" => $amount_text,
+                "currencyCode" => "USD",
+                "decimalPlaces" => 2,
+                "amount" => $amount
+            ],
+            "notificationURLs" => [
+                "confirmationURL" => "{$app_url}/payment-confirmation",
+                "failedURL" => "{$app_url}/payment-failed",
+                "cancellationURL" => "{$app_url}/payment-cancellation",
+                "backendURL" => "{$app_url}/payment-backend"
+            ],
+
+            "customFieldList" => [
+                [
+                    "fieldName" => "TestField",
+                    "fieldValue" => "This is test"
+                ]
+            ]
+        ];
+
+        $payload = [
+            "request" => $request,
+            "iss" => SecurityData::$AccessToken,
+            "aud" => "PacoAudience",
+            "CompanyApiKey" => SecurityData::$AccessToken,
+            "iat" => $now->unix(),
+            "nbf" => $now->unix(),
+            "exp" => $now->addHour()->unix(),
+        ];
+
+        $stringPayload = json_encode($payload);
+        $signingKey = $this->GetPrivateKey(SecurityData::$MerchantSigningPrivateKey);
+        $encryptingKey = $this->GetPublicKey(SecurityData::$PacoEncryptionPublicKey);
+
+        $body = $this->EncryptPayload($stringPayload, $signingKey, $encryptingKey);
+
+        //third-party http client https://github.com/guzzle/guzzle
+        $response = $this->client->post('api/1.0/Payment/prePaymentUI', [
+            'headers' => [
+                'Accept' => 'application/jose',
+                'CompanyApiKey' => SecurityData::$AccessToken,
+                'Content-Type' => 'application/jose; charset=utf-8'
+            ],
+            'body' => $body
+        ]);
+
+        $token = $response->getBody()->getContents();
+        $decryptingKey = $this->GetPrivateKey(SecurityData::$MerchantDecryptionPrivateKey);
+        $signatureVerificationKey = $this->GetPublicKey(SecurityData::$PacoSigningPublicKey);
+
+        return $this->DecryptToken($token, $decryptingKey, $signatureVerificationKey);
+    }
+    public function ExecuteJoseNonUI(): string
     {
         $now = Carbon::now();
         $orderNo = $now->getPreciseTimestamp(3);

@@ -200,24 +200,21 @@
                             <tr>
                               <th></th>
                               <th>Date</th>
-                              <th>File Name</th>
-                              <th>Success</th>
-                              <th>Fail</th>
-                              <th>Merchant</th>
-                              <th>Amount</th>
-                              <th>Detail</th>
+                              <th>USD</th>
+                              <th>USDT</th>
+                              <th>Status</th>
                             </tr>
                           </thead>
                           <tbody>
                             @if (isset($histories))
                               @foreach ($histories as $history)
-                                @if($history["order_status"] === 'delivered')
+                                @if($history["status"] === 'success')
                                   <?php $color = "success" ?>
-                                @elseif($history["order_status"] === 'pending')
+                                @elseif($history["status"] === 'pending')
                                   <?php $color = "primary" ?>
-                                @elseif($history["order_status"] === 'on hold')
+                                @elseif($history["status"] === 'on hold')
                                   <?php $color = "warning" ?>
-                                @elseif($history["order_status"] === 'canceled')
+                                @elseif($history["status"] === 'failed')
                                   <?php $color = "danger" ?>
                                 @endif
                                 <?php
@@ -226,15 +223,10 @@
 
                                 <tr>
                                   <td></td>
-                                  <td class="product-name">{{ $history["created_at"] }}</td>
-                                  <td class="product-category">{{ $history["file_name"] }}</td>
-                                  <td class="product-category">{{ $history["success"] }}</td>
-                                  <td class="product-price">{{ $history["fail"] }}</td>
-                                  <td class="product-price">{{ $history["merchant"] }}</td>
-                                  <td class="product-price">{{ $history["amount"] }}</td>
-                                  <td class="product-action">
-                                    <span class="action-edit" onclick="viewDetail({{$history}})"><i class="feather icon-edit"></i></span>
-                                  </td>
+                                  <td class="product-name">{{ date('d/m/Y G:i', strtotime($history["created_at"] ))}}</td>
+                                  <td class="product-category">{{ $history["usd"] }}</td>
+                                  <td class="product-category">{{ $history["usdt"] }}</td>
+                                  <td class="product-price {{$color}}">{{ strtoupper($history["status"]) }}</td>
                                 </tr>
                               @endforeach
                             @endif
@@ -265,7 +257,7 @@
 @section('page-script')
         <script> 
             let base_url = '<?php echo url(""); ?>'
-            let balance = '<?php echo isset($balance) ?  $balance : 0 ?>'
+            // let balance = '<?php echo isset($balance) ?  $balance : 0 ?>'
         </script>
         {{-- Page js files --}}
         <script src="{{ asset('js/scripts/ui/buy.js') }}"></script>

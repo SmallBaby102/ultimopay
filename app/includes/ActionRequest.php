@@ -69,7 +69,7 @@ abstract class ActionRequest
         $this->jwsBuilder = new JWSBuilder(
              new AlgorithmManager(
                  [
-                    // new PS256()
+                    new PS256()
                 ]
             )
         );
@@ -82,7 +82,7 @@ abstract class ActionRequest
             new JWSVerifier(
                  new AlgorithmManager(
                      [
-                        // new PS256()
+                        new PS256()
                     ]
                 )
             ),

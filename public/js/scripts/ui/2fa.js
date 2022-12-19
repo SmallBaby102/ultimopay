@@ -15,25 +15,27 @@ $(document).ready(function() {
       let code = $("#code").val();
       let password = $("#password").val();
       if($("#btn-enable").text() === "Enable 2-FA" ){
-          $("#btn-enable").text("Loading");
+          $("#btn-enable").text("Enabling...");
           $.post(`/set-2Fa`, { code, password }, (res) => {
             console.log(res);
-            if(res === "success"){
+            let response = JSON.parse(res);
+            if(response.result === "success"){
               $("#btn-enable").text("Disable 2-FA"); 
             } else {
                 $("#btn-enable").text("Enable 2-FA");
-                toastr.error('failed.', '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+                toastr.error(response.error.errorMessage, '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             }
           })
       } else {
-          $("#btn-enable").text("Loading");
+          $("#btn-enable").text("Disabling...");
           $.post(`/disable-2Fa`, { code, password }, (res) => {
+            let response = JSON.parse(res);
             console.log(res);
-            if(res === "success"){
+            if(response.result === "success"){
               $("#btn-enable").text("Enable 2-FA"); 
             } else {
               $("#btn-enable").text("Disable 2-FA"); 
-                toastr.error('failed.', '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+                toastr.error(response.error.errorMessage, '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             }
           })    
       }

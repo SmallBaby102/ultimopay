@@ -51,15 +51,16 @@ $(document).ready(function() {
         toastr.warning('Input a correct amount!', 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         return;
       }
-      $("#buy-with-card-btn").text("Loading");
+      $("#buy-with-card-btn").text("Buying...");
       $.post(`/buy-with-card`, { amount, currency }, (res) => {
         $("#buy-with-card-btn").text("Buy with card");
-        if(res === "failed"){
-          toastr.error('Buying failed.', 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
-        } else {
-          let result = JSON.parse(res);
+        console.log("buy", res)
+        if(res.status === "success"){
+          let result = JSON.parse(res.data);
           let url = (result.data.paymentPage.paymentPageURL);
           window.location.href = url;
+        } else {
+          toastr.error(res.message, 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         }
       })
   })

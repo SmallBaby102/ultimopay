@@ -138,7 +138,7 @@
     color: black;
    }
    .two_desc {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     display: flex;
    }
    .buy-input {
@@ -201,6 +201,10 @@
                         You can buy USDT with Credit Card or Debit card. The card brands that can be used are MasterCard and UnionPay.
                         <br/>You will receive it instantly in your USDT wallet in your account.
                     </div>
+                   
+                  </div>
+                  <div class="d-flex justify-content-end">
+                      <a href="/transaction-history">Transaction History</a>
                   </div>
                   <div class="w-75 m-auto text-center">
                     <div class="content_title mt-2">YOU SPEND</div>

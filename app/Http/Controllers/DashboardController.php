@@ -19,23 +19,6 @@ class DashboardController extends Controller
 {
     // Dashboard - Analytics
     public function home(Request $request) {
-        // $accounts = [
-        //    0 => [
-        //     "account_id"=> "630F3ADF-A1FD-4EA5-A423-01D4499FD796",
-        //     "currency"=> "USDT"
-        //    ],
-        //     1=>[
-        //     "account_id"=> "82E6F313-AA04-4A47-984C-F1E48D8DE962",
-        //     "currency"=> "USD"
-        //     ],
-        // ];
-        // $request->session()->put('accounts',$accounts);
-        // return view('/pages/home', [
-        //     'balance' =>1,
-        //     'email' =>  $request->session()->get("email"),
-        //     'merchant' => $request->session()->get("merchant"),
-
-        // ]);
         $email = $request->query('email');
         $merchant = $request->query('merchant', env("MERCHANT"));
         $request->session()->put('email',  $email);
@@ -69,30 +52,12 @@ class DashboardController extends Controller
         
                 ]);
              } else {
-                $response2 = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Authorization' => $api_key
-                ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-                    'email_address' => $email,
-                    'auth_token' =>$request->session()->get("auth_token"),
-                    'currency' => "USDT"
-                 ]);
-                 if ($response2["result"] === "success") {
-                    return view('/pages/home', [
-                        'balance' => $response2['wallet'][0]['balance'],
+                return view('/pages/home', [
+                        'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
                         'email' =>  $request->session()->get("email"),
-                        'merchant' => $request->session()->get("merchant"),
-            
-                    ]);
-                 } else {
-                    return view('/pages/home', [
-                         'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
-                         'email' =>  $request->session()->get("email"),
-                        'merchant' => $request->session()->get("merchant"),
-            
-                    ]);
-                   
-                 }
+                    'merchant' => $request->session()->get("merchant"),
+        
+                ]);
              }
             
         } else {
@@ -210,8 +175,9 @@ class DashboardController extends Controller
             return $response1;
         } catch (\Throwable $th) {
             //throw $th;
-            $result = [];
-            $result["result"] = "Network problem";
+            $result["error"] = [];
+            $result["error"]["errorMessage"] = "Network problem!";
+            $result["result"] = "failed";
             return $result;
         }
       
@@ -242,15 +208,20 @@ class DashboardController extends Controller
        
     }
     public function buyWithCard(Request $request) {
+        $result = [];
          try {
                 $amount = $request->input("amount");
                 $request->session()->put('currency', $request->input("currency"));
                 $payment = new \Payment();
-                $response = $payment->Execute($amount);
+                $response = $payment->ExecuteJose($amount);
                 $request->session()->put('amount',$amount);
-                return $response;
+                $result["status"] = "success";
+                $result["data"] = $response;
+                return $result;
             } catch (GuzzleException $e) {
-                return "failed";
+                $result["status"] = "failed";
+                $result["message"] = $e->getMessage();
+                return $result;
             }
     }
     public function paymentConfirmation(Request $request) {
@@ -462,9 +433,9 @@ class DashboardController extends Controller
                 'secret' => $fixedcode,
                 'email' => $request->session()->get("email"),
                 'merchant' =>  $request->session()->get("merchant"),
-
                ]);
-         } else {
+         } 
+         else {
             return view('/pages/2fa', [
                  'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
                 'email' =>  $request->session()->get("email"),
@@ -487,11 +458,8 @@ class DashboardController extends Controller
             'password' =>$password,
             'type' => 1
          ]);
-         if ($response1["result"] === "success") {
-            return "success";
-         } else {
-            return "failed";
-         }
+         return $response1;
+        
          
     }
     public function disableTwoFa(Request $request) {
@@ -508,12 +476,7 @@ class DashboardController extends Controller
             'password' =>$password,
             'type' => 0
          ]);
-         if ($response1["result"] === "success") {
-            return "success";
-         } else {
-            return "failed";
-         }
-         
+         return $response1;
     }
     public function check2FA() {
         $api_key = 'Bearer ' . env("API_KEY");
@@ -550,10 +513,45 @@ class DashboardController extends Controller
          }
     }
     public function transactionHistory(Request $request) {
-        $histories = Report::all();
-        return view('/pages/transaction-history', [
-            'histories' => $histories,
-           ]);
+           $email =  $request->session()->get("email");
+           $api_key = 'Bearer ' . env("API_KEY");
+           try {
+               //code...
+               $response1 = Http::withHeaders([
+                   'Content-Type' => 'application/json',
+                   'Authorization' => $api_key
+               ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                   'email_address' => $email,
+                   'auth_token' =>$request->session()->get("auth_token"),
+                   'currency' => "USDT"
+                ]);
+                if ($response1["result"] === "success") {
+                    $histories = Report::where("email", $email)->get();
+                    return view('/pages/transaction-history', [
+                        'histories' => $histories,
+                        'balance' => $response1['wallet'][0]['balance'],
+                        'email' =>  $email,
+                        'merchant' => $request->session()->get("merchant"),
+                    ]);
+
+                } else {
+                   return view('/pages/transaction-history', [
+                       'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
+                       'email' =>  $email,
+                       'merchant' => $request->session()->get("merchant"),
+                   ]);
+                }
+           } catch (\Throwable $th) {
+               //throw $th;
+               $tfaStatus = $this->check2FA();
+   
+               return view('/pages/transaction-history', [
+                  'error' => "Network problem.",
+                  'email' =>  $email,
+                  'merchant' => $request->session()->get("merchant"),
+              ]);
+           }
+
     }
     public function login(Request $request){
 
