@@ -46,7 +46,7 @@ $(document).ready(function() {
     },
     bFilter: false,
     aLengthMenu: [[5, 10, 15, 20], [5, 10, 15, 20]],
-    order: [[1, "asc"]],
+    order: [[0, "desc"]],
     bInfo: false,
     pageLength: 5,
     buttons: [
