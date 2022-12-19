@@ -199,8 +199,8 @@
                           <thead>
                             <tr>
                               <th>Date</th>
-                              <th>USD</th>
-                              <th>USDT</th>
+                              <th>Paid(USD)</th>
+                              <th>Recieved(USDT)</th>
                               <th>Status</th>
                             </tr>
                           </thead>
