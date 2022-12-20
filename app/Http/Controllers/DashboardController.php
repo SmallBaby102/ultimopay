@@ -265,7 +265,7 @@ class DashboardController extends Controller
                 $account = $item;
             }
         }
-        $transaction_id = $request->orderNo;
+        $transaction_id = $request->input("orderNo", 0);
         $account_id = $account["account_id"];
         $email = $request->session()->get("email");
         $report = new Report;
