@@ -251,7 +251,6 @@ class Payment extends ActionRequest
         $encryptingKey = $this->GetPublicKey(SecurityData::$PacoEncryptionPublicKey);
 
         $body = $this->EncryptPayload($stringPayload, $signingKey, $encryptingKey);
-
         //third-party http client https://github.com/guzzle/guzzle
         $response = $this->client->post('api/1.0/Payment/prePaymentUI', [
             'headers' => [

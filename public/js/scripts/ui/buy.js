@@ -100,7 +100,7 @@ $(document).ready(function() {
         $("#buy-processing").hide();
         if(res.status === "success"){
           let result = JSON.parse(res.data);
-          let url = (result.data.paymentPage.paymentPageURL);
+          let url = (result.response.Data.paymentPage.paymentPageURL);
           window.location.href = url;
         } else {
           toastr.error(res.message, 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });

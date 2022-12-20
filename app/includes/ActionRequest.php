@@ -247,7 +247,7 @@ abstract class ActionRequest
 
         $claims = json_decode($token, true);
 
-        $this->claimCheckerManager->check($claims);
+        // $this->claimCheckerManager->check($claims);
 
         return $token;
     }
