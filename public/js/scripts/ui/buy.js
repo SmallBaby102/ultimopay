@@ -37,6 +37,7 @@
   }  
 $(document).ready(function() {
   "use strict"
+  let originVal_spend = 0;
   let originVal = 0;
   $("#buy-processing").hide();
   $("#balance").html(limitDecimal($("#balance").text(), 6));
@@ -47,17 +48,17 @@ $(document).ready(function() {
       $("#receive_amount").val("");
     } else {
       if(parseFloat($("#spend_amount").val()) > 5000){
-        $("#spend_amount").val(originVal);
+        $("#spend_amount").val(originVal_spend);
         toastr.warning("Please input value under 5000!", 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         return;
       }
       let receive_amount = parseFloat($("#spend_amount").val()) * 0.95;
-      $("#receive_amount").val(Math.floor(receive_amount * 100) / 100);
+      $("#receive_amount").val(limitDecimal(receive_amount, 6));
     }
   })
   $("#spend_amount").on('keydown', function(e) {
      if (/^[\d+\.]$/.test(e.key) || e.key === "Backspace" || e.key === "Delete"|| e.key === "ArrowLeft"|| e.key === "ArrowRight"){
-      originVal = $("#spend_amount").val();
+      originVal_spend = $("#spend_amount").val();
     }
     else {
       e.preventDefault();
@@ -70,9 +71,10 @@ $(document).ready(function() {
     } else {
      
       let receive_amount = parseFloat($("#receive_amount").val()) / 0.95;
-      $("#spend_amount").val(Math.ceil(receive_amount * 100) / 100);
+      $("#spend_amount").val(limitDecimal(Math.ceil(receive_amount * 1000000) / 1000000, 6));
       if(parseFloat($("#spend_amount").val()) > 5000){
         $("#receive_amount").val(originVal);
+        $("#spend_amount").val(originVal_spend);
         toastr.warning("Please input value under 5000!", 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         return;
       }
@@ -81,6 +83,7 @@ $(document).ready(function() {
   $("#receive_amount").on('keydown', function(e) {
     if (/^[\d+\.]$/.test(e.key) || e.key === "Backspace" || e.key === "Delete"|| e.key === "ArrowLeft"|| e.key === "ArrowRight"){
       originVal = $("#receive_amount").val();
+      originVal_spend = $("#spend_amount").val();
     }
     else {
       e.preventDefault();

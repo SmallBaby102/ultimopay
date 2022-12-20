@@ -92,6 +92,7 @@ $(document).ready(function() {
       $.post(`/withdraw`, { code, password, network, address, amount }, (res) => {
         $("#withdraw").show();
         $("#withdraw-processing").hide();
+
           // Position Top Center
         let response = JSON.parse(res);
         if(response.result === "success"){
@@ -99,9 +100,9 @@ $(document).ready(function() {
           window.location.href = base_url + "/withdraw-page";
         }
         else {
-          if(response.error.errorMessage === "invalid credentials")
+          if(response.error.errorMessage === "invalid credentials.")
           {
-            toastr.error("Invalid Password", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+            toastr.error("Invalid Password!", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
           } else
             toastr.error(response.error.errorMessage, 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         }

@@ -21,12 +21,12 @@ $(document).ready(function() {
             let response = JSON.parse(res);
             if(response.result === "success"){
               $("#btn-enable").text("Disable 2-FA"); 
-              toastr.success("Successfully Enabled 2-FA", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+              toastr.success("Successfully Enabled 2-FA", '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             } else {
                 $("#btn-enable").text("Enable 2-FA");
-                if(response.error.errorMessage === "invalid credentials")
+                if(response.error.errorMessage === "invalid credentials.")
                 {
-                  toastr.error("Invalid Password", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+                  toastr.error("Invalid Password", '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
                 } else
                   toastr.error(response.error.errorMessage, '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             }
@@ -37,13 +37,13 @@ $(document).ready(function() {
             let response = JSON.parse(res);
             console.log(res);
             if(response.result === "success"){
-              toastr.success("Successfully Disabled 2-FA", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+              toastr.success("Successfully Disabled 2-FA", '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
               $("#btn-enable").text("Enable 2-FA"); 
             } else {
                 $("#btn-enable").text("Disable 2-FA"); 
                 if(response.error.errorMessage === "invalid credentials")
                 {
-                  toastr.error("Invalid Password", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+                  toastr.error("Invalid Password", '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
                 } else
                   toastr.error(response.error.errorMessage, '2-FA', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
             }

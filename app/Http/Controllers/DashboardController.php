@@ -14,7 +14,34 @@ require_once (app_path().'/includes/api/Settlement.php');
 require_once (app_path().'/includes/api/Refund.php');
 require_once (app_path().'/includes/PHPGangsta/GoogleAuthenticator.php');
 
-
+// function limitDecimal($t, $n){
+//     $s = 0;
+//     if ($t === "" || $t === null) {
+//       $t = 0;
+//     }
+//     $string = (string)$t;
+//     $decimal = "";
+//     if ($string.substr(0, $string.indexOf(".")) === -1|| $string.substr(0, $string.indexOf(".")) === "") {
+//       for ($index = 0; $index < $n; $index++) {
+//         $decimal += "0";
+//       }   
+//       $s = $string  + "." +$decimal;
+//     } else {
+//        $decimal = substr($string, indexOf($string, "."), $n + 1);
+//        $start = $decimal.length -1;
+//        if(start < n){
+//         for ($index = $start; $index < $n; $index++) {
+//               $decimal += "0";
+//         }
+//       } else {
+//          $s = $string.substr(0, $string.indexOf(".")) + $string.substr($string.indexOf("."), n+1);
+//          return $s;
+//       }
+      
+//       s = string.substr(0, string.indexOf(".")) +decimal;
+//       }
+//       return s;
+//   }  
 class DashboardController extends Controller
 {
     // Dashboard - Analytics
@@ -229,6 +256,7 @@ class DashboardController extends Controller
         $CONFIGURATOR_PASSWORD = "fY2ADeHDFkpVq%J18gaq";
         $pay_amount = $request->session()->get('amount');
         $crypto_amount = $pay_amount * 0.95;
+        $crypto_amount = floor($crypto_amount * 1000000) / 1000000;
         $userId = $request->session()->get('user_id');
         $accounts = $request->session()->get('accounts');
         $currency = $request->session()->get('currency');
@@ -322,7 +350,7 @@ class DashboardController extends Controller
     }
     public function paymentCancellation(Request $request) {
         $pay_amount = $request->session()->get('amount');
-        $crypto_amount = $pay_amount * 0.95;
+        $crypto_amount = floor($pay_amount * 1000000) / 1000000;
             $api_key = 'Bearer ' . env("API_KEY");
             $response1 = Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -349,6 +377,8 @@ class DashboardController extends Controller
     public function paymentFailed(Request $request) {
             $pay_amount = $request->session()->get('amount');
             $crypto_amount = $pay_amount * 0.95;
+            $crypto_amount = floor($crypto_amount * 1000000) / 1000000;
+
             $email = $request->session()->get("email");
             $transaction_id = $request->orderNo;
             $report = new Report;

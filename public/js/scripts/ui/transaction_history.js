@@ -7,29 +7,39 @@
     Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
   // On Edit
-  function viewDetail(product){
-    console.log(product);
-    $("#detailModalName").text(product.file_name);
-    $("#detailModalSuccessCount").text(product.success);
-    $("#detailModalFailCount").text(product.fail);
-    let tBody = "";
-    product.detail.forEach((element, i) => {
-      let index = i+1;
-     tBody += `<td></td><td>`
-            + index + `  </td><td>`
-            + element.user_id + `  </td><td>`
-            + element.amount + `  </td><td>`
-            + element.result + `  </td>
-            <td  class="text-primary text-underline"> <u>Retry</u> </td>`;
-    });
-   
-    $('#file_detail').html(tBody);
-    $("#detailDialog").show();
-  }
+  function limitDecimal(t, n){
+    var s;
+    if (t === "" || t === null) {
+      t = 0;
+    }
+    var string = String(t);
+    var decimal = "";
+    if (string.substr(0, string.indexOf(".")) === -1|| string.substr(0, string.indexOf(".")) === "") {
+      for (let index = 0; index < n; index++) {
+        decimal += "0";
+      }   
+      s = string  + "." +decimal;
+    } else {
+       decimal = string.substr(string.indexOf("."), n+1);
+       let start = decimal.length -1;
+       if(start < n){
+        for (let index = start; index < n; index++) {
+              decimal += "0";
+        }
+      } else {
+         s = string.substr(0, string.indexOf(".")) + string.substr(string.indexOf("."), n+1);
+         return s;
+      }
+      
+      s = string.substr(0, string.indexOf(".")) +decimal;
+      }
+      return s;
+  } 
 
 $(document).ready(function() {
   "use strict"
- 
+  $("#balance").html(limitDecimal($("#balance").text(), 6));
+  $("#balance").show();
   // init list view datatable
   var dataListView = $(".data-list-view").DataTable({
     responsive: false,
