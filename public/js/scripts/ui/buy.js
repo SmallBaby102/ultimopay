@@ -47,9 +47,15 @@ $(document).ready(function() {
     if ($("#spend_amount").val() === "") {
       $("#receive_amount").val("");
     } else {
-      if(parseFloat($("#spend_amount").val()) > 5000){
+      let spend_amount =parseFloat($("#spend_amount").val());
+      if(spend_amount > 5000) {
         $("#spend_amount").val(originVal_spend);
         toastr.warning("Please input value under 5000!", 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+        return;
+      }
+      if(!(/^\d+\.?\d{0,2}$/.test(spend_amount))) {
+        $("#spend_amount").val(originVal_spend);
+        toastr.warning("You can't input the value under the decimal 2.", 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         return;
       }
       let receive_amount = parseFloat($("#spend_amount").val()) * 0.95;
@@ -71,11 +77,18 @@ $(document).ready(function() {
     } else {
      
       let receive_amount = parseFloat($("#receive_amount").val()) / 0.95;
-      $("#spend_amount").val(limitDecimal(Math.ceil(receive_amount * 1000000) / 1000000, 6));
-      if(parseFloat($("#spend_amount").val()) > 5000){
+      $("#spend_amount").val(limitDecimal(Math.ceil(receive_amount * 100) / 100, 2));
+      let spend_amount = parseFloat($("#spend_amount").val()) ;
+      if( spend_amount > 5000 ){
         $("#receive_amount").val(originVal);
         $("#spend_amount").val(originVal_spend);
         toastr.warning("Please input value under 5000!", 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+        return;
+      }
+      if( !(/^\d+\.?\d{0,6}$/.test( $("#receive_amount").val()))){
+        $("#receive_amount").val(originVal);
+        $("#spend_amount").val(originVal_spend);
+        toastr.warning("You can't input the value under the decimal 6.", 'Buy', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         return;
       }
     }

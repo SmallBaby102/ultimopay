@@ -52,9 +52,14 @@ $(document).ready(function() {
     if ($("#amount").val() === "") {
     $("#withdraw_fee").html("5&#8202;USDT + 5% of withdraw amount");
     } else {
-      if(parseFloat($("#amount").val()) > available_amount){
+      if(parseFloat($("#amount").val()) > available_amount ){
         $("#amount").val(originVal);
         toastr.warning("Please input value under the available amount!", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
+        return;
+      }
+      if(!(/^\d+\.?\d{0,6}$/.test( $("#amount").val()))){
+        $("#amount").val(originVal);
+        toastr.warning("You can't input the value under the decimal 6.", 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
         return;
       }
       let withdraw_fee = 5 + parseFloat($("#amount").val()) * 5 / 100;
@@ -92,12 +97,14 @@ $(document).ready(function() {
       $.post(`/withdraw`, { code, password, network, address, amount }, (res) => {
         $("#withdraw").show();
         $("#withdraw-processing").hide();
-
+       
           // Position Top Center
         let response = JSON.parse(res);
         if(response.result === "success"){
           toastr.success('Withdraw succeeded.', 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
-          window.location.href = base_url + "/withdraw-page";
+          setTimeout(function (){
+            window.location.href = base_url + "/withdraw-page";
+          }, 2000); 
         }
         else {
           if(response.error.errorMessage === "invalid credentials.")
