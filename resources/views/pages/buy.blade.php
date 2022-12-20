@@ -209,12 +209,12 @@
                   <div class="w-75 m-auto text-center">
                     <div class="content_title mt-2">YOU SPEND</div>
                     <div class="buy-input">
-                      <input type="text" class="amount_input" id="spend_amount" placeholder="0.00" />
+                      <input type="text" class="amount_input" id="spend_amount" placeholder="0.000000" />
                       <img alt="Icon" class="coin_icon"src="images/logo/usd.svg"/>  
                     </div>
                     <div class="content_title mt-2">YOU RECEIVE</div>
                     <div class="buy-input">
-                      <input type="text" class="amount_input" id="receive_amount" placeholder="0.00" />
+                      <input type="text" class="amount_input" id="receive_amount" placeholder="0.000000" />
                       <img alt="Icon" class="coin_icon"src="images/logo/usdt.png"/>
                     </div>
                     

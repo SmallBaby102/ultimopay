@@ -197,7 +197,7 @@
                         Please note that you do not mistake the network, if you withdraw via another network  your assets may be lost.
                     </div>
                     <div class="content_title mt-2">AMOUNT</div>
-                    <input type="text" class="amount_input" id="amount" placeholder="0.00" />
+                    <input type="text" class="amount_input" id="amount" placeholder="0.000000" />
                     <div class="mt-2">
                         <div class="d-flex w-75 notice_item">
                           <div class="left_side">Minimum amount</div>
