@@ -17,6 +17,7 @@ Route::get('/', 'DashboardController@home');
 Route::get('/buy-page', 'DashboardController@buyPage');
 Route::get('/deposit-page', 'DashboardController@depositPage');
 Route::get('/withdraw-page', 'DashboardController@withdrawPage');
+Route::get('/balance', 'DashboardController@getBalance');
 Route::get('/deposit_address/{network}/{id}', 'DashboardController@getDepositAddress');
 Route::get('/2fa', 'DashboardController@twoFa');
 Route::get('/payment-confirmation', 'DashboardController@paymentConfirmation');

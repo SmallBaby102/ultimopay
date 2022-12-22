@@ -146,23 +146,23 @@ class DashboardController extends Controller
                 'Content-Type' => 'application/json',
                 'Authorization' => $api_key
             ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
-                'email_address' => $request->session()->get("email"),
-                'auth_token' =>$request->session()->get("auth_token"),
+                'email_address' => Session::get("email"),
+                'auth_token' => Session::get("auth_token"),
                 'currency' => "USDT"
              ]);
              if ($response1["result"] === "success") {
                 $tfaStatus = $this->check2FA();
                 return view('/pages/withdraw', [
                     'balance' => $response1['wallet'][0]['balance'],
-                    'email' =>  $request->session()->get("email"),
-                    'merchant' => $request->session()->get("merchant"),
+                    'email' =>  Session::get("email"),
+                    'merchant' => Session::get("merchant"),
                     'tfaStatus' => $tfaStatus,
                    ]);
              } else {
                 return view('/pages/withdraw', [
                      'error' => "Your session was expired. Please re-login UltimoCasino and try again.",
-                    'email' =>  $request->session()->get("email"),
-                    'merchant' => $request->session()->get("merchant"),
+                    'email' =>  Session::get("email"),
+                    'merchant' => Session::get("merchant"),
                 ]);
              }
         } catch (\Throwable $th) {
@@ -171,9 +171,32 @@ class DashboardController extends Controller
 
             return view('/pages/withdraw', [
                 'error' => "Network problem.",
-               'email' =>  $request->session()->get("email"),
-               'merchant' => $request->session()->get("merchant"),
+               'email' =>  Session::get("email"),
+               'merchant' => Session::get("merchant"),
            ]);
+        }
+      
+    }
+    public function getBalance(Request $request) {
+        $api_key = 'Bearer ' . env("API_KEY");
+        try {
+            //code...
+            $response1 = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $api_key
+            ])->post("https://api.ultimopay.io/v1/walletBalance/",  [
+                'email_address' => Session::get("email"),
+                'auth_token' => Session::get("auth_token"),
+                'currency' => "USDT"
+             ]);
+             if ($response1["result"] === "success") {
+                $tfaStatus = $this->check2FA();
+                return $response1['wallet'][0]['balance'];
+             } else {
+                return 0;
+             }
+        } catch (\Throwable $th) {
+            return 0;
         }
       
     }

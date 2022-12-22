@@ -167,5 +167,5 @@
             $("#balance").show();
         </script>
         {{-- Page js files --}}
-        <script src="{{ asset(mix('js/scripts/ui/data-list-view.js')) }}"></script>
+        <script src="{{ asset('js/scripts/ui/data-list-view.js') }}"></script>
 @endsection

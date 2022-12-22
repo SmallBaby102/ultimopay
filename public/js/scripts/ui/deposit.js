@@ -49,7 +49,7 @@ $(document).ready(function() {
     } else {
       $.get(`/deposit_address/${network}/${"test"}`, (res) => {
         $("#copy-to-clipboard-input").val(res);
-        $("#deposit_address_qrcode").attr("src", `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${"sss"}`);
+        $("#deposit_address_qrcode").attr("src", `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${res}`);
         $(".deposit_address").show();
       })
       

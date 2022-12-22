@@ -38,6 +38,8 @@
 
 $(document).ready(function() {
   "use strict"
+  console.log(balance);
+  balance = balance.replaceAll("," , "");
   let available_amount = (balance - 5) / 1.05;
   if (available_amount < 0) {
     available_amount = 0;
@@ -45,7 +47,7 @@ $(document).ready(function() {
   let originVal = 0;
   $("#balance").html(limitDecimal($("#balance").text(), 6));
   $("#balance").show();
-  $("#available_amount").html(Math.floor(available_amount * 1000000) / 1000000 + "&#8202;USDT");
+  $("#available_amount").html((Math.floor(available_amount * 1000000) / 1000000).toLocaleString() + "&#8202;USDT");
   $("#withdraw-processing").hide();
   
   $("#amount").on('keyup', function(e) {
@@ -103,7 +105,17 @@ $(document).ready(function() {
         if(response.result === "success"){
           toastr.success('Withdraw succeeded.', 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
           setTimeout(function (){
-            window.location.reload();
+            $.get("/balance", (val) => {
+              balance = val.replaceAll("," , "");
+              let available_amount = (balance - 5) / 1.05;
+              if (available_amount < 0) {
+                available_amount = 0;
+              }
+              $("#balance").html(limitDecimal(val, 6));
+              $("#available_amount").html((Math.floor(available_amount * 1000000) / 1000000).toLocaleString() + "&#8202;USDT");
+
+            })
+            // window.location.reload();
 
           }, 2000); 
         }
