@@ -103,7 +103,8 @@ $(document).ready(function() {
         if(response.result === "success"){
           toastr.success('Withdraw succeeded.', 'Withdraw', { positionClass: 'toast-top-center', containerId: 'toast-top-center' });
           setTimeout(function (){
-            window.location.href = base_url + "/withdraw-page";
+            window.location.reload();
+
           }, 2000); 
         }
         else {
