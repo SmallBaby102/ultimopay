@@ -190,7 +190,6 @@ class DashboardController extends Controller
                 'currency' => "USDT"
              ]);
              if ($response1["result"] === "success") {
-                $tfaStatus = $this->check2FA();
                 return $response1['wallet'][0]['balance'];
              } else {
                 return 0;
