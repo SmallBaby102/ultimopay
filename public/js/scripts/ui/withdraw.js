@@ -47,7 +47,7 @@ $(document).ready(function() {
   let originVal = 0;
   $("#balance").html(limitDecimal($("#balance").text(), 6));
   $("#balance").show();
-  $("#available_amount").html(limitDecimal(available_amount, 6) + "&#8202;USDT");
+  $("#available_amount").html((Math.floor(available_amount * 1000000) / 1000000) + "&#8202;USDT");
   $("#withdraw-processing").hide();
   
   $("#amount").on('keyup', function(e) {
@@ -112,7 +112,7 @@ $(document).ready(function() {
                 available_amount = 0;
               }
               $("#balance").html(limitDecimal(val, 6));
-              $("#available_amount").html(limitDecimal(available_amount , 6) + "&#8202;USDT");
+              $("#available_amount").html((Math.floor(available_amount * 1000000) / 1000000) + "&#8202;USDT");
 
             })
             // window.location.reload();
