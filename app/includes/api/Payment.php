@@ -180,7 +180,7 @@ class Payment extends ActionRequest
     public function ExecuteJose($amount = 0): string
     {
         $crypto_amount = $amount * 0.95;
-        $crypto_amount = bcdiv($crypto_amount, 1, 6);
+        $crypto_amount = floor($crypto_amount * 1000000) / 1000000;
         $amount = ceil($amount * 100) / 100;
         $amount_text = ceil($amount * 100);
         $len = strlen((string)$amount_text);
