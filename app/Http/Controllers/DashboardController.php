@@ -14,34 +14,6 @@ require_once (app_path().'/includes/api/Settlement.php');
 require_once (app_path().'/includes/api/Refund.php');
 require_once (app_path().'/includes/PHPGangsta/GoogleAuthenticator.php');
 
-// function limitDecimal($t, $n){
-//     $s = 0;
-//     if ($t === "" || $t === null) {
-//       $t = 0;
-//     }
-//     $string = (string)$t;
-//     $decimal = "";
-//     if ($string.substr(0, $string.indexOf(".")) === -1|| $string.substr(0, $string.indexOf(".")) === "") {
-//       for ($index = 0; $index < $n; $index++) {
-//         $decimal += "0";
-//       }   
-//       $s = $string  + "." +$decimal;
-//     } else {
-//        $decimal = substr($string, indexOf($string, "."), $n + 1);
-//        $start = $decimal.length -1;
-//        if(start < n){
-//         for ($index = $start; $index < $n; $index++) {
-//               $decimal += "0";
-//         }
-//       } else {
-//          $s = $string.substr(0, $string.indexOf(".")) + $string.substr($string.indexOf("."), n+1);
-//          return $s;
-//       }
-      
-//       s = string.substr(0, string.indexOf(".")) +decimal;
-//       }
-//       return s;
-//   }  
 class DashboardController extends Controller
 {
     // Dashboard - Analytics
