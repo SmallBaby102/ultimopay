@@ -117,7 +117,7 @@ $(document).ready(function() {
             })
             // window.location.reload();
 
-          }, 10000); 
+          }, 5000); 
         }
         else {
           if(response.error.errorMessage === "invalid credentials.")
