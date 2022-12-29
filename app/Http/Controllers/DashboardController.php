@@ -285,7 +285,7 @@ class DashboardController extends Controller
             "accountId"=> $account_id, 
             "type"=> 5, 
             "amount"=>  $crypto_amount, 
-            "comment"=>  `{$pay_amount} USD Buy with Card (UltimoCasino) (order number : {$transaction_id})`, 
+            "comment"=>  "{$pay_amount} USD Buy with Card (UltimoCasino) (order number : {$transaction_id})", 
             "currency"=>  "USDT"
         ]);
 
